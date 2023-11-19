@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>torch_fem.operator.condense &mdash; torch_fem  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/mytheme.css" type="text/css" />
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/walkerchi/torch_fem_sphinx_theme/master/torch_fem_sphinx_theme/static/img/torch_fem_logo.webp"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="https://raw.githubusercontent.com/walkerchi/torch_fem_sphinx_theme/master/torch_fem_sphinx_theme/static/img/torch_fem_logo.webp" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Install Torch-FEM</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../get_started/introduction.html">Introduction by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/adjacency.html">Adjacency</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/poisson.html">Poisson Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/heat.html">Heat Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/wave.html">Wave Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/linear_elasticity.html">Linear Elasticity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference/dataset.html">torch_fem.dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference/mesh.html">torch_fem.mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference/sparse.html">torch_fem.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference/assemble.html">torch_fem.assemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference/operator.html">torch_fem.operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference/functional.html">torch_fem.functional</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">torch_fem</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">torch_fem.operator.condense</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for torch_fem.operator.condense</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span> 
+<span class="kn">from</span> <span class="nn">..sparse</span> <span class="kn">import</span> <span class="n">SparseMatrix</span>
+
+<span class="c1"># TODO: add dirichlet_value option for condense_rhs and __call__</span>
+
+<div class="viewcode-block" id="Condenser"><a class="viewcode-back" href="../../../api_reference/operator.html#torch_fem.operator.Condenser">[docs]</a><span class="k">class</span> <span class="nc">Condenser</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Static Condensing Operator for Dirichlet Boundary Condition</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        K_{inner} u_{inner} = f_{inner} - K_{ou2in} u_{ou2in}</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dirichlet_mask: torch.Tensor </span>
+<span class="sd">        1D tensor of shape :math:`[n_{\\text{dof}}]`</span>
+<span class="sd">        the mask of the dirichlet boundary condition</span>
+<span class="sd">    dirichlet_value: torch.Tensor </span>
+<span class="sd">        1D tensor of shape :math:`[n_{\\text{dof}}]` or :math:`[n_{\\text{outer_dof}}]`</span>
+<span class="sd">        the value of the dirichlet boundary condition</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dirichlet_mask: torch.Tensor of shape  :math:`[n_{\\text{dof}}]`</span>
+<span class="sd">        the mask of the dirichlet boundary condition</span>
+<span class="sd">    dirichlet_value: torch.Tensor of shape :math:`[n_{\\text{outer_dof}}]`</span>
+<span class="sd">        the value of the dirichlet boundary condition</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirichlet_mask</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dirichlet_value</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">dirichlet_mask</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">,</span> <span class="s2">&quot;the dtype of dirichlet_mask must be torch.bool&quot;</span>
+        <span class="k">assert</span> <span class="n">dirichlet_mask</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;tDirichlet_mask must be 1D tensor&quot;</span>
+        <span class="k">assert</span> <span class="n">dirichlet_value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">dirichlet_value</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;dirichlet_value must be 1D tensor&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_mask</span>  <span class="o">=</span> <span class="n">dirichlet_mask</span>
+        <span class="k">if</span> <span class="n">dirichlet_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_value</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">dirichlet_value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">dirichlet_mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_value</span> <span class="o">=</span> <span class="n">dirichlet_value</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_mask</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">dirichlet_value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">dirichlet_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="s2">&quot;the shape of dirichlet_value must be [n_dof] or [n_outer_dof]&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_value</span> <span class="o">=</span> <span class="n">dirichlet_value</span>
+        
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">inner_row</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inner_col</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ou2in_row</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ou2in_col</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_inner_edge</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_ou2in_edge</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_hash</span>   <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">K_ou2in</span>       <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_compute_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span><span class="n">SparseMatrix</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        precompute the condensed components</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">            matrix: SparseMatrix</span>
+<span class="sd">                the matrix to be condensed</span>
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">            matrix: SparseMatrix</span>
+<span class="sd">                the condensed matrix</span>
+<span class="sd">            rhs: torch.Tensor of shape [n_dof]</span>
+<span class="sd">                the condensed right hand side</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">edge_u</span><span class="p">,</span> <span class="n">edge_v</span>               <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">matrix</span><span class="o">.</span><span class="n">col</span>
+        <span class="n">n_dof</span>                        <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">is_inner_dof</span><span class="p">,</span> <span class="n">is_outer_dof</span> <span class="o">=</span> <span class="o">~</span><span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_mask</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_mask</span>
+        
+        <span class="n">is_inner_u</span><span class="p">,</span>    <span class="n">is_inner_v</span>    <span class="o">=</span> <span class="n">is_inner_dof</span><span class="p">[</span><span class="n">edge_u</span><span class="p">],</span> <span class="n">is_inner_dof</span><span class="p">[</span><span class="n">edge_v</span><span class="p">]</span>
+        <span class="n">is_outer_u</span><span class="p">,</span>    <span class="n">is_outer_v</span>    <span class="o">=</span> <span class="n">is_outer_dof</span><span class="p">[</span><span class="n">edge_u</span><span class="p">],</span> <span class="n">is_outer_dof</span><span class="p">[</span><span class="n">edge_v</span><span class="p">]</span>
+        <span class="n">is_inner_edge</span><span class="p">,</span> <span class="n">is_ou2in_edge</span> <span class="o">=</span> <span class="n">is_inner_u</span> <span class="o">&amp;</span> <span class="n">is_inner_v</span><span class="p">,</span> <span class="n">is_inner_u</span> <span class="o">&amp;</span> <span class="n">is_outer_v</span>
+        <span class="n">n_inner_dofs</span><span class="p">,</span> <span class="n">n_outer_dofs</span> <span class="o">=</span> <span class="n">is_inner_dof</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">is_outer_dof</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">local_nids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">n_dof</span><span class="p">,),</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+        <span class="n">local_nids</span><span class="p">[</span><span class="n">is_inner_dof</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_inner_dofs</span><span class="p">)</span>
+        <span class="n">local_nids</span><span class="p">[</span><span class="n">is_outer_dof</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_outer_dofs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">inner_row</span> <span class="o">=</span> <span class="n">local_nids</span><span class="p">[</span><span class="n">edge_u</span><span class="p">[</span><span class="n">is_inner_edge</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inner_col</span> <span class="o">=</span> <span class="n">local_nids</span><span class="p">[</span><span class="n">edge_v</span><span class="p">[</span><span class="n">is_inner_edge</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ou2in_row</span> <span class="o">=</span> <span class="n">local_nids</span><span class="p">[</span><span class="n">edge_u</span><span class="p">[</span><span class="n">is_ou2in_edge</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ou2in_col</span> <span class="o">=</span> <span class="n">local_nids</span><span class="p">[</span><span class="n">edge_v</span><span class="p">[</span><span class="n">is_ou2in_edge</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_inner_edge</span> <span class="o">=</span> <span class="n">is_inner_edge</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_ou2in_edge</span> <span class="o">=</span> <span class="n">is_ou2in_edge</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inner_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_inner_dofs</span><span class="p">,</span> <span class="n">n_inner_dofs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ou2in_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_inner_dofs</span><span class="p">,</span> <span class="n">n_outer_dofs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_hash</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">layout_hash</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_inner_dof</span> <span class="o">=</span> <span class="n">n_inner_dofs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_outer_dof</span> <span class="o">=</span> <span class="n">n_outer_dofs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span>       <span class="o">=</span> <span class="n">n_dof</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_inner_dof</span> <span class="o">=</span> <span class="n">is_inner_dof</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_outer_dof</span> <span class="o">=</span> <span class="n">is_outer_dof</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span><span class="n">SparseMatrix</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        matrix: SparseMatrix</span>
+<span class="sd">            the matrix to be condensed</span>
+<span class="sd">        source_value: torch.Tensor </span>
+<span class="sd">            1D tensor of shape :math:`[n_{\\text{dof}}]`</span>
+<span class="sd">            the right hand side of the linear system</span>
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        matrix: SparseMatrix</span>
+<span class="sd">            the condensed matrix</span>
+<span class="sd">        rhs: torch.Tensor </span>
+<span class="sd">            1D tensor of shape :math:`[n_{\\text{dof}}]`</span>
+<span class="sd">            the condensed right hand side</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">rhs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rhs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_row</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_compute_layout</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;the shape of matrix must be [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="si">}</span><span class="s2">], but got </span><span class="si">{</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;the shape of matrix must be [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="si">}</span><span class="s2">], but got </span><span class="si">{</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="n">matrix</span><span class="o">.</span><span class="n">has_same_layout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout_hash</span><span class="p">),</span> <span class="s2">&quot;the layout of the matrix is changed, please recompute the condensed matrix&quot;</span>
+        <span class="k">assert</span> <span class="n">rhs</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;rhs must be 1D tensor&quot;</span>
+        <span class="k">assert</span> <span class="n">rhs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;the shape of rhs must be [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="si">}</span><span class="s2">], but got </span><span class="si">{</span><span class="n">rhs</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+        
+        <span class="n">K_inner</span> <span class="o">=</span> <span class="n">SparseMatrix</span><span class="p">(</span>
+            <span class="n">matrix</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">is_inner_edge</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_row</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_col</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_shape</span><span class="p">,</span> 
+        <span class="p">)</span>
+        <span class="n">K_ou2in</span> <span class="o">=</span> <span class="n">SparseMatrix</span><span class="p">(</span>
+            <span class="n">matrix</span><span class="o">.</span><span class="n">edata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">is_ou2in_edge</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ou2in_row</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ou2in_col</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ou2in_shape</span><span class="p">,</span> 
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">K_ou2in</span> <span class="o">=</span> <span class="n">K_ou2in</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_value</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">K_inner</span><span class="o">.</span><span class="n">edata</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">K_inner</span><span class="o">.</span><span class="n">edata</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">rhs</span>  <span class="o">=</span> <span class="n">rhs</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">K_inner</span><span class="o">.</span><span class="n">edata</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">K_inner</span><span class="o">.</span><span class="n">edata</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+       
+        <span class="k">return</span> <span class="n">K_inner</span><span class="p">,</span> <span class="n">rhs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">is_inner_dof</span><span class="p">]</span> <span class="o">-</span> <span class="n">K_ou2in</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_value</span>
+
+<div class="viewcode-block" id="Condenser.condense_rhs"><a class="viewcode-back" href="../../../api_reference/operator.html#torch_fem.operator.Condenser.condense_rhs">[docs]</a>    <span class="k">def</span> <span class="nf">condense_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;only condense the right hand side</span>
+<span class="sd">        </span>
+<span class="sd">        .. math::</span>
+
+<span class="sd">            f_{inner} - K_{ou2in} u_{ou2in}</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        rhs: torch.Tensor</span>
+<span class="sd">            1D tensor of shape :math:`[n_{\\text{dof}}]`</span>
+<span class="sd">            the right hand side of the linear system</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            1D tensor of shape :math:`[n_{\\text{inner_dof}}]`</span>
+<span class="sd">            the condensed right hand side</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">K_ou2in</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;please call __call__ first&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_value</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">rhs</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">rhs</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="n">rhs</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K_ou2in</span><span class="o">.</span><span class="n">edata</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K_ou2in</span><span class="o">.</span><span class="n">edata</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">rhs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">is_inner_dof</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">K_ou2in</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_value</span></div>
+       
+<div class="viewcode-block" id="Condenser.recover"><a class="viewcode-back" href="../../../api_reference/operator.html#torch_fem.operator.Condenser.recover">[docs]</a>    <span class="k">def</span> <span class="nf">recover</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;recovert the solution</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u: torch.Tensor </span>
+<span class="sd">            1D tensor of shape :math:`[n_{\\text{inner_dof}}]`</span>
+<span class="sd">            the solution of the condensed linear system</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            1D tensor of shape :math:`[n_{\\text{dof}}]`</span>
+<span class="sd">            the recovered solution of the linear system</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">u</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;u must be 1D tensor&quot;</span>
+        <span class="k">assert</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_inner_dof</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;the shape of u must be [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_inner_dof</span><span class="si">}</span><span class="s2">], but got </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">u_full</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">u_full</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">is_inner_dof</span><span class="p">]</span> <span class="o">+=</span> <span class="n">u</span> 
+        <span class="n">u_full</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">is_outer_dof</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_value</span>
+
+        <span class="k">return</span> <span class="n">u_full</span></div></div>
+    
+
+<span class="n">Condenser</span><span class="o">.</span><span class="n">__autodoc__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;__call__&quot;</span><span class="p">,</span> <span class="s2">&quot;condense_rhs&quot;</span><span class="p">,</span> <span class="s2">&quot;recover&quot;</span><span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, walkerchi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

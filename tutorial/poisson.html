@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poisson Equation &mdash; torch_fem  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/mytheme.css" type="text/css" />
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/walkerchi/torch_fem_sphinx_theme/master/torch_fem_sphinx_theme/static/img/torch_fem_logo.webp"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Wave Equation" href="wave.html" />
+    <link rel="prev" title="Adjacency" href="adjacency.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="https://raw.githubusercontent.com/walkerchi/torch_fem_sphinx_theme/master/torch_fem_sphinx_theme/static/img/torch_fem_logo.webp" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Install Torch-FEM</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/introduction.html">Introduction by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="adjacency.html">Adjacency</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Poisson Equation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adaptive-mesh-refinement">Adaptive Mesh Refinement</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="wave.html">Wave Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_elasticity.html">Linear Elasticity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/dataset.html">torch_fem.dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/mesh.html">torch_fem.mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/sparse.html">torch_fem.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/assemble.html">torch_fem.assemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/operator.html">torch_fem.operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/functional.html">torch_fem.functional</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">torch_fem</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Poisson Equation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorial/poisson.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="poisson-equation">
+<h1>Poisson Equation<a class="headerlink" href="#poisson-equation" title="Permalink to this heading"></a></h1>
+<section id="adaptive-mesh-refinement">
+<h2>Adaptive Mesh Refinement<a class="headerlink" href="#adaptive-mesh-refinement" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">torch_fem</span> <span class="kn">import</span> <span class="n">LaplaceElementAssembler</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">,</span>  <span class="n">Condenser</span>
+<span class="kn">from</span> <span class="nn">torch_fem.dataset</span> <span class="kn">import</span> <span class="n">PoissonMultiFrequency</span>
+<span class="kn">from</span> <span class="nn">torch_fem.visualization</span> <span class="kn">import</span> <span class="n">StreamPlotter</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
+    <span class="n">mesh</span>      <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">gen_rectangle</span><span class="p">(</span><span class="n">chara_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">assembler</span> <span class="o">=</span> <span class="n">LaplaceElementAssembler</span><span class="o">.</span><span class="n">from_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    <span class="n">equation</span>  <span class="o">=</span> <span class="n">PoissonMultiFrequency</span><span class="p">(</span><span class="n">K</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">condenser</span> <span class="o">=</span> <span class="n">Condenser</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">boundary_mask</span><span class="p">)</span>
+
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
+    <span class="n">scheduler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">StepLR</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">step_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+    <span class="n">epoch</span> <span class="o">=</span> <span class="mi">100</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="n">equation</span><span class="o">.</span><span class="n">initial_condition</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
+    <span class="c1"># u = equation.solution(mesh.points)</span>
+    <span class="n">loss_fn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">with</span> <span class="n">StreamPlotter</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;poisson.mp4&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">plotter</span><span class="p">:</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">draw_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epoch</span><span class="p">):</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">K</span> <span class="o">=</span> <span class="n">assembler</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">K</span> <span class="o">@</span> <span class="n">u</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+            <span class="c1"># TODO: why retain_graph=True?</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">retain_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="n">plotter</span><span class="o">.</span><span class="n">draw_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">)),</span> <span class="n">losses</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;epoch&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;loss.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div style="display: flex; justify-content: center; align-items: center;">
+<video width="400" height="400" controls>
+  <source src="../_static/poisson_adaptive.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</div></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="adjacency.html" class="btn btn-neutral float-left" title="Adjacency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="wave.html" class="btn btn-neutral float-right" title="Wave Equation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, walkerchi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

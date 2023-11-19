@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>torch_fem.dataset.mesh.meshgen &mdash; torch_fem  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/mytheme.css" type="text/css" />
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/walkerchi/torch_fem_sphinx_theme/master/torch_fem_sphinx_theme/static/img/torch_fem_logo.webp"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html">
+            
+              <img src="https://raw.githubusercontent.com/walkerchi/torch_fem_sphinx_theme/master/torch_fem_sphinx_theme/static/img/torch_fem_logo.webp" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Install Torch-FEM</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../get_started/introduction.html">Introduction by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/adjacency.html">Adjacency</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/poisson.html">Poisson Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/heat.html">Heat Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/wave.html">Wave Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/linear_elasticity.html">Linear Elasticity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/dataset.html">torch_fem.dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/mesh.html">torch_fem.mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/sparse.html">torch_fem.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/assemble.html">torch_fem.assemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/operator.html">torch_fem.operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/functional.html">torch_fem.functional</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">torch_fem</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">torch_fem.dataset.mesh.meshgen</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for torch_fem.dataset.mesh.meshgen</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">gmsh</span> 
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">...mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">...shape</span> <span class="kn">import</span> <span class="n">element_type2dimension</span><span class="p">,</span> <span class="n">element_type2order</span>
+
+
+<div class="viewcode-block" id="MeshGen"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen">[docs]</a><span class="k">class</span> <span class="nc">MeshGen</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    element_type : str, optional</span>
+<span class="sd">        If ``element_type`` is ``None``, then it will generate a mix mesh. </span>
+<span class="sd">        Otherwise, the order and element will be determined by ``element_type``.</span>
+<span class="sd">    dimension : int, optional</span>
+<span class="sd">        The dimension of the mesh, e.g., :math:`2` or :math:`3`.</span>
+<span class="sd">    order : int, optional</span>
+<span class="sd">        The order of the element, e.g., :math:`1`, :math:`2`.</span>
+<span class="sd">    chara_length : float, optional</span>
+<span class="sd">        The characteristic length of the mesh. The smaller the value, the more dense </span>
+<span class="sd">        the mesh. Default is :math:`0.1`.</span>
+
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    1. generate rectangle mesh with triangle elements:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from torch_fem import MeshGen</span>
+<span class="sd">            generator = MeshGen(element_type=&quot;tri&quot;) # triangle mesh for 2d</span>
+<span class="sd">            generator.addRectangle(0,0,1,1) # add a rectangle</span>
+<span class="sd">            mesh = generator.gen().plot() # generate and visualize the mesh</span>
+<span class="sd">        </span>
+<span class="sd">    2. generate mixed mesh with left triangle and right rectangle </span>
+
+<span class="sd">        .. code-block:: python    </span>
+<span class="sd">            </span>
+<span class="sd">            from torch_fem import MeshGen</span>
+<span class="sd">            mesh_gen = MeshGen(element_type=None, chara_length=0.1, order=2)</span>
+<span class="sd">            mesh_gen.add_rectangle(0,0,0.5,1, element=&quot;tri&quot;)</span>
+<span class="sd">            mesh_gen.add_rectangle(0.5,0,0.5,1, element=&quot;quad&quot;)</span>
+<span class="sd">            mesh_gen.remove_circle(0.5,0.5,0.1)</span>
+<span class="sd">            mesh_gen.gen().plot()</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">chara_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">cache_path</span><span class="o">=</span><span class="s2">&quot;./tmp.msh&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">element_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">order</span>     <span class="o">=</span> <span class="n">element_type2order</span><span class="p">[</span><span class="n">element_type</span><span class="p">]</span>
+            <span class="n">dimension</span> <span class="o">=</span> <span class="n">element_type2dimension</span><span class="p">[</span><span class="n">element_type</span><span class="p">]</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">=</span> <span class="n">dimension</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order</span>     <span class="o">=</span> <span class="n">order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chara_length</span> <span class="o">=</span> <span class="n">chara_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span> <span class="o">=</span> <span class="n">element_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache_path</span>   <span class="o">=</span> <span class="n">cache_path</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;geometry&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_objects</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quad_objects</span> <span class="o">=</span> <span class="p">[]</span>
+           
+<div class="viewcode-block" id="MeshGen.add_rectangle"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.add_rectangle">[docs]</a>    <span class="k">def</span> <span class="nf">add_rectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="s2">&quot;tri&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;add a rectangle to the geometry</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        left: float</span>
+<span class="sd">            the left boundary of the rectangle</span>
+<span class="sd">        bottom: float</span>
+<span class="sd">            the bottom boundary of the rectangle</span>
+<span class="sd">        width: float</span>
+<span class="sd">            the width of the rectangle</span>
+<span class="sd">        height: float</span>
+<span class="sd">            the height of the rectangle</span>
+<span class="sd">        element: str, optional</span>
+<span class="sd">            the type of the element, can be &quot;tri&quot; or &quot;quad&quot;</span>
+<span class="sd">            default: &quot;tri&quot;</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MeshGen</span>
+<span class="sd">            the mesh generator itself</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="s2">&quot;tri&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;triangle&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;quad&quot;</span>
+        <span class="k">assert</span> <span class="n">element</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;tri&quot;</span><span class="p">,</span> <span class="s2">&quot;quad&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dimension must be 2, but got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">rectangle</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addRectangle</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span><span class="si">}</span><span class="s2">]rectangle(</span><span class="si">{</span><span class="n">left</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">bottom</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">height</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">rectangle</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">element</span> <span class="o">==</span> <span class="s2">&quot;quad&quot;</span><span class="p">:</span>
+            <span class="c1"># gmsh.model.mesh.setTransfiniteSurface(rectangle)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quad_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="MeshGen.remove_rectangle"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.remove_rectangle">[docs]</a>    <span class="k">def</span> <span class="nf">remove_rectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;remove the rectangle from the geometry</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        left: float</span>
+<span class="sd">            the left boundary of the rectangle</span>
+<span class="sd">        bottom: float</span>
+<span class="sd">            the bottom boundary of the rectangle</span>
+<span class="sd">        width: float</span>
+<span class="sd">            the width of the rectangle</span>
+<span class="sd">        height: float</span>
+<span class="sd">            the height of the rectangle</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MeshGen</span>
+<span class="sd">            the mesh generator itself</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dimension must be 2, but got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">rectangle</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addRectangle</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="n">difference</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">cut</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_objects</span><span class="p">],</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="n">rectangle</span><span class="p">)])</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span><span class="si">}</span><span class="s2">]rectangle(</span><span class="si">{</span><span class="n">left</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">bottom</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">height</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">rectangle</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="MeshGen.add_circle"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.add_circle">[docs]</a>    <span class="k">def</span> <span class="nf">add_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="s2">&quot;tri&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;add a circle to the geometry</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cx: float</span>
+<span class="sd">            the x coordinate of the center</span>
+<span class="sd">        cy: float</span>
+<span class="sd">            the y coordinate of the center</span>
+<span class="sd">        r: float</span>
+<span class="sd">            the radius of the circle</span>
+<span class="sd">        element: str, optional</span>
+<span class="sd">            the type of the element, can be &quot;tri&quot; or &quot;quad&quot;</span>
+<span class="sd">            default: &quot;tri&quot;</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MeshGen</span>
+<span class="sd">            the mesh generator itself</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="s2">&quot;tri&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;triangle&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;quad&quot;</span>
+        <span class="k">assert</span> <span class="n">element</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;tri&quot;</span><span class="p">,</span> <span class="s2">&quot;quad&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dimension must be 2, but got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">circle</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addDisk</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span><span class="si">}</span><span class="s2">]circle(</span><span class="si">{</span><span class="n">cx</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">cy</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">circle</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">element</span> <span class="o">==</span> <span class="s2">&quot;quad&quot;</span><span class="p">:</span>
+            <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">setRecombine</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">circle</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="MeshGen.remove_circle"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.remove_circle">[docs]</a>    <span class="k">def</span> <span class="nf">remove_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;remove the cirlce from the geometry</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cx: float</span>
+<span class="sd">            the x coordinate of the center</span>
+<span class="sd">        cy: float</span>
+<span class="sd">            the y coordinate of the center</span>
+<span class="sd">        r: float</span>
+<span class="sd">            the radius of the circle</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MeshGen</span>
+<span class="sd">            the mesh generator itself</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dimension must be 2, but got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">circle</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addDisk</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="n">difference</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">cut</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_objects</span><span class="p">],</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="n">circle</span><span class="p">)])</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span><span class="si">}</span><span class="s2">]circle(</span><span class="si">{</span><span class="n">cx</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">cy</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">circle</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="MeshGen.add_cube"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.add_cube">[docs]</a>    <span class="k">def</span> <span class="nf">add_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;add a cube to the geometry, only works for 3d</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x: float</span>
+<span class="sd">            the x coordinate of the center</span>
+<span class="sd">        y: float</span>
+<span class="sd">            the y coordinate of the center</span>
+<span class="sd">        z: float</span>
+<span class="sd">            the z coordinate of the center</span>
+<span class="sd">        dx: float</span>
+<span class="sd">            the width of the cube</span>
+<span class="sd">        dy: float</span>
+<span class="sd">            the height of the cube</span>
+<span class="sd">        dz: float</span>
+<span class="sd">            the depth of the cube</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MeshGen</span>
+<span class="sd">            the mesh generator itself</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dimension must be 3, but got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">cube</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addBox</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span><span class="si">}</span><span class="s2">]cube(</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">dx</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">dy</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">dz</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">cube</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="MeshGen.remove_cube"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.remove_cube">[docs]</a>    <span class="k">def</span> <span class="nf">remove_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;remove the cube from the geometry, only works for 3d</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x: float</span>
+<span class="sd">            the x coordinate of the center</span>
+<span class="sd">        y: float</span>
+<span class="sd">            the y coordinate of the center</span>
+<span class="sd">        z: float</span>
+<span class="sd">            the z coordinate of the center</span>
+<span class="sd">        dx: float</span>
+<span class="sd">            the width of the cube</span>
+<span class="sd">        dy: float</span>
+<span class="sd">            the height of the cube</span>
+<span class="sd">        dz: float</span>
+<span class="sd">            the depth of the cube</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MeshGen</span>
+<span class="sd">            the mesh generator itself        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dimension must be 3, but got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">cube</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addBox</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="p">)</span>
+        <span class="n">difference</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">cut</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_objects</span><span class="p">],</span> <span class="p">[(</span><span class="mi">3</span><span class="p">,</span><span class="n">cube</span><span class="p">)])</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span><span class="si">}</span><span class="s2">]cube(</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">dx</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">dy</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">dz</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">cube</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="MeshGen.add_sphere"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.add_sphere">[docs]</a>    <span class="k">def</span> <span class="nf">add_sphere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;add a sphere to the geometry, only works for 3d</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x: float</span>
+<span class="sd">            the x coordinate of the center</span>
+<span class="sd">        y: float</span>
+<span class="sd">            the y coordinate of the center</span>
+<span class="sd">        z: float</span>
+<span class="sd">            the z coordinate of the center</span>
+<span class="sd">        r: float</span>
+<span class="sd">            the radius of the sphere</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MeshGen</span>
+<span class="sd">            the mesh generator itself</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dimension must be 3, but got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">sphere</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addSphere</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span><span class="si">}</span><span class="s2">]sphere(</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">sphere</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="MeshGen.remove_sphere"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.remove_sphere">[docs]</a>    <span class="k">def</span> <span class="nf">remove_sphere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;remove the sphere from the geometry, only works for 3d</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x: float</span>
+<span class="sd">            the x coordinate of the center</span>
+<span class="sd">        y: float</span>
+<span class="sd">            the y coordinate of the center</span>
+<span class="sd">        z: float</span>
+<span class="sd">            the z coordinate of the center</span>
+<span class="sd">        r: float</span>
+<span class="sd">            the radius of the sphere</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MeshGen</span>
+<span class="sd">            the mesh generator itself</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dimension must be 3, but got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">sphere</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addSphere</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="n">difference</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">cut</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_objects</span><span class="p">],</span> <span class="p">[(</span><span class="mi">3</span><span class="p">,</span><span class="n">sphere</span><span class="p">)])</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span><span class="si">}</span><span class="s2">]sphere(</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">sphere</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="MeshGen.gen"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.gen">[docs]</a>    <span class="k">def</span> <span class="nf">gen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;generate the mesh from the geometry</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        show: bool, optional</span>
+<span class="sd">            whether to show the mesh in the gmsh gui</span>
+<span class="sd">            default: :obj:`False`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch_fem.mesh.Mesh</span>
+<span class="sd">            the generated mesh</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quad_objects</span><span class="p">:</span>
+                <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">setRecombine</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">obj</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;quad&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_objects</span><span class="p">:</span>
+                <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">setRecombine</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">obj</span><span class="p">])</span>
+        
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.ElementOrder&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">getEntities</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">chara_length</span><span class="p">)</span>
+
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_objects</span><span class="p">])</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setPhysicalName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;domain&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Generate the mesh</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="n">gmsh</span><span class="o">.</span><span class="n">fltk</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+        <span class="c1"># Save the mesh</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_path</span><span class="p">)</span>
+
+        <span class="c1"># Finalize Gmsh</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_path</span><span class="p">)</span>
+
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mesh</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, walkerchi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

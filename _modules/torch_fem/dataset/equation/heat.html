@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>torch_fem.dataset.equation.heat &mdash; torch_fem  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/mytheme.css" type="text/css" />
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/walkerchi/torch_fem_sphinx_theme/master/torch_fem_sphinx_theme/static/img/torch_fem_logo.webp"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html">
+            
+              <img src="https://raw.githubusercontent.com/walkerchi/torch_fem_sphinx_theme/master/torch_fem_sphinx_theme/static/img/torch_fem_logo.webp" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Install Torch-FEM</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../get_started/introduction.html">Introduction by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/adjacency.html">Adjacency</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/poisson.html">Poisson Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/heat.html">Heat Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/wave.html">Wave Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/linear_elasticity.html">Linear Elasticity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/dataset.html">torch_fem.dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/mesh.html">torch_fem.mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/sparse.html">torch_fem.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/assemble.html">torch_fem.assemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/operator.html">torch_fem.operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/functional.html">torch_fem.functional</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">torch_fem</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">torch_fem.dataset.equation.heat</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for torch_fem.dataset.equation.heat</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
+
+<div class="viewcode-block" id="HeatMultiFrequency"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.equation.HeatMultiFrequency">[docs]</a><span class="k">class</span> <span class="nc">HeatMultiFrequency</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Multi-frequency heat equation, with :math:`0` boundary condition </span>
+
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \\frac{\\partial u }{\\partial t} = \\Delta u </span>
+
+<span class="sd">    where :math:`t \in [0,T],\quad(x_1,x_2)\in  [-1,1]^2`,</span>
+<span class="sd">    with the boundary condition :math:`u(t, \pm 1, \pm 1) = 0`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    mu: torch.Tensor , optional</span>
+<span class="sd">        2D tensor of shape :math:`[N, d]` or 1D tensor of shape :math:`[d]`, where :math:`N` is the number of samples, :math:`d` is the dimension of the frequencies</span>
+<span class="sd">        the coefficient of the heat equation,</span>
+<span class="sd">        if ``None``, it will be randomly generated by :math:`\mu\sim Unif([-1,1]^d)`</span>
+<span class="sd">    d: int, optional</span>
+<span class="sd">        the dimension of the frequencies, if ``mu`` is not ``None``, this parameter will be ignored</span>
+<span class="sd">        if ``mu`` is ``None``, it will be used to generate the random ``mu``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;d must be provided if mu is None&quot;</span>
+            <span class="n">mu</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">=</span> <span class="n">mu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">d</span>
+
+<div class="viewcode-block" id="HeatMultiFrequency.initial_condition"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.equation.HeatMultiFrequency.initial_condition">[docs]</a>    <span class="k">def</span> <span class="nf">initial_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the heat source function at each point in the domain</span>
+<span class="sd">        </span>
+<span class="sd">        .. math::</span>
+
+<span class="sd">            u(0,x_1,x_2,\\mu) = -\\frac{1}{d}\\sum_{m=1}^d  \\mu_m sin(\\pi m x_1)sin(\\pi m x_2)/\\sqrt m</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            points: torch.Tensor </span>
+<span class="sd">                2D tensor of shape :math:`[|\mathcal V|, 2]`, where  :math:`|\mathcal V|` is the number of vertices</span>
+<span class="sd">                all the points must be in :math:`[-1,1]^2`</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            torch.Tensor</span>
+<span class="sd">                1D tensor of shape :math:`[|\mathcal V|]` or :math:`[N, |\mathcal V|]`, where :math:`N` is the number of samples, :math:`|\mathcal V|` is the number of vertices</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;the shape of points must be [n_points, 2], but got </span><span class="si">{</span><span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">points</span><span class="o">&lt;=</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">points</span><span class="o">&gt;=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="sa">f</span><span class="s2">&quot;the points must be in [-1,1]^2, but got </span><span class="si">{</span><span class="n">points</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span>
+        <span class="n">d</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mu</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">mu</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="c1"># (1, d)</span>
+            <span class="n">m</span>  <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># (1, d)</span>
+            <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">]</span> <span class="c1"># (n_points, 1)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mu</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="c1"># (N, 1, d)</span>
+            <span class="n">m</span>  <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="c1"># (1, 1, d)</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="c1"># (1, n_points, 1)</span>
+        
+        <span class="n">u0</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span><span class="n">mu</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">/</span> <span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">u0</span></div>
+  
+<div class="viewcode-block" id="HeatMultiFrequency.solution"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.equation.HeatMultiFrequency.solution">[docs]</a>    <span class="k">def</span> <span class="nf">solution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the poisson solution function at each point in the domain</span>
+<span class="sd">           </span>
+<span class="sd">        .. math::</span>
+
+<span class="sd">            u(t,x_1,x_2,\\mu) = -\\frac{1}{d}\\sum_{m=1}^d \\frac{\\mu_m}{\\sqrt{m}} e^{-2m^2\\pi^2t} sin(\\pi m  x_1)sin(\\pi mx_2)</span>
+<span class="sd">            </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        points: torch.Tensor </span>
+<span class="sd">            2D tensor of shape :math:`[|\mathcal V|, 2]`, where  :math:`|\mathcal V|` is the number of vertices</span>
+<span class="sd">        t: float</span>
+<span class="sd">            the time</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ut: torch.Tensor </span>
+<span class="sd">            1D tensor of shape :math:`[|\mathcal V|]` or :math:`[N, |\mathcal V|]`, where :math:`N` is the number of samples, :math:`|\mathcal V|` is the number of vertices</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;the shape of points must be [n_points, 2], but got </span><span class="si">{</span><span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">points</span><span class="o">&lt;=</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">points</span><span class="o">&gt;=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="sa">f</span><span class="s2">&quot;the points must be in [-1,1]^2, but got </span><span class="si">{</span><span class="n">points</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;t must be non-negative, but got </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span>
+        <span class="n">d</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mu</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">mu</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="c1"># (1, d)</span>
+            <span class="n">m</span>  <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>  <span class="c1"># (1, d)</span>
+            <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">]</span> <span class="c1"># (n_points, 1)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mu</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="c1"># (N, 1, d)</span>
+            <span class="n">m</span>  <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="c1"># (1, 1, d)</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="c1"># (1, n_points, 1)</span>
+        <span class="n">ut</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span><span class="n">mu</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span><span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">/</span> <span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ut</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, walkerchi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

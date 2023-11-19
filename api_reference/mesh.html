@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>torch_fem.mesh &mdash; torch_fem  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/mytheme.css" type="text/css" />
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/walkerchi/torch_fem_sphinx_theme/master/torch_fem_sphinx_theme/static/img/torch_fem_logo.webp"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="torch_fem.sparse" href="sparse.html" />
+    <link rel="prev" title="torch_fem.dataset" href="dataset.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="https://raw.githubusercontent.com/walkerchi/torch_fem_sphinx_theme/master/torch_fem_sphinx_theme/static/img/torch_fem_logo.webp" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Install Torch-FEM</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/introduction.html">Introduction by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/adjacency.html">Adjacency</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/poisson.html">Poisson Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/heat.html">Heat Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/wave.html">Wave Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/linear_elasticity.html">Linear Elasticity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">torch_fem.dataset</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">torch_fem.mesh</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mesh">Mesh</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sparse.html">torch_fem.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assemble.html">torch_fem.assemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operator.html">torch_fem.operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional.html">torch_fem.functional</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">torch_fem</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">torch_fem.mesh</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api_reference/mesh.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="torch-fem-mesh">
+<h1>torch_fem.mesh<a class="headerlink" href="#torch-fem-mesh" title="Permalink to this heading"></a></h1>
+<nav class="contents local" id="contents">
+<p class="topic-title">contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#mesh" id="id1">Mesh</a></p></li>
+</ul>
+</nav>
+<section id="mesh">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Mesh</a><a class="headerlink" href="#mesh" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://pytorch.org/docs/master/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.points">
+<span class="sig-name descname"><span class="pre">points</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.points" title="Permalink to this definition"></a></dt>
+<dd><p>2D tensor of shape <span class="math notranslate nohighlight">\([|\mathcal V|, D]\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal V|\)</span> is the number of points and <span class="math notranslate nohighlight">\(D\)</span> is the dimension of the space
+the coordinates of the points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.cells">
+<span class="sig-name descname"><span class="pre">cells</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.cells" title="Permalink to this definition"></a></dt>
+<dd><p>Each key is a <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.shape.element_type()</span></code>,
+and for each <code class="xref py py-obj docutils literal notranslate"><span class="pre">element_type</span></code>, there is a corresponding 2D tensor of shape <span class="math notranslate nohighlight">\([|\mathcal V, B]\)</span>, where <span class="math notranslate nohighlight">\(B\)</span> is the number of basis functions
+the cells of the mesh</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BufferDict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, <a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.point_data">
+<span class="sig-name descname"><span class="pre">point_data</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.point_data" title="Permalink to this definition"></a></dt>
+<dd><p>Each key is a <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.shape.element_type()</span></code>,
+the point data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BufferDict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, <a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a>], optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.cell_data">
+<span class="sig-name descname"><span class="pre">cell_data</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.cell_data" title="Permalink to this definition"></a></dt>
+<dd><p>Each key is a <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.shape.element_type()</span></code>,
+the cell data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BufferDict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, BufferDict[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>, <a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a>]], optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.field_data">
+<span class="sig-name descname"><span class="pre">field_data</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.field_data" title="Permalink to this definition"></a></dt>
+<dd><p>Each key is a <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.shape.element_type()</span></code>,
+the field data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BufferDict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, <a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a>], optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.cell_sets">
+<span class="sig-name descname"><span class="pre">cell_sets</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.cell_sets" title="Permalink to this definition"></a></dt>
+<dd><p>Each key is a <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.shape.element_type()</span></code>,
+the cell sets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a>, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.dim2eletyp">
+<span class="sig-name descname"><span class="pre">dim2eletyp</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.dim2eletyp" title="Permalink to this definition"></a></dt>
+<dd><p>Each key is a dimension, and the value is a list of element types of the dimension</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>, List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.default_eletyp">
+<span class="sig-name descname"><span class="pre">default_eletyp</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.default_eletyp" title="Permalink to this definition"></a></dt>
+<dd><p>the default element type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.default_element_type">
+<span class="sig-name descname"><span class="pre">default_element_type</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.default_element_type" title="Permalink to this definition"></a></dt>
+<dd><p>the default element type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.register_point_data">
+<span class="sig-name descname"><span class="pre">register_point_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.register_point_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.register_point_data" title="Permalink to this definition"></a></dt>
+<dd><p>Add key-value pair to <a class="reference internal" href="#torch_fem.mesh.Mesh.point_data" title="torch_fem.mesh.Mesh.point_data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_data</span></code></a> buffer,
+since the <a class="reference internal" href="#torch_fem.mesh.Mesh.point_data" title="torch_fem.mesh.Mesh.point_data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_data</span></code></a> is a <code class="xref py py-class docutils literal notranslate"><span class="pre">torch_fem.nn.BufferDict</span></code>, you are recommended to use this method instead of <code class="xref py py-obj docutils literal notranslate"><span class="pre">__setitem__</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the key of the value</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><em>torch.Tensor</em></a>) – 1D tensor of shape <span class="math notranslate nohighlight">\([|\mathcal V|,...]\)</span>, where <span class="math notranslate nohighlight">\(\mathcal V\)</span> is the number of nodes/vertices/points, the value to be registered</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self will be returned</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.to_meshio">
+<span class="sig-name descname"><span class="pre">to_meshio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.to_meshio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.to_meshio" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the meshio mesh object</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>meshio.Mesh</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.save" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the name of the file</p></li>
+<li><p><strong>file_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the format of the file, e.g., ‘msh’, ‘vtk’, ‘obj’
+default is the file extension</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self will be returned</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.to_file">
+<span class="sig-name descname"><span class="pre">to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.to_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.to_file" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the name of the file</p></li>
+<li><p><strong>file_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the format of the file, e.g., ‘msh’, ‘vtk’, ‘obj’
+default is the file extension</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self will be returned</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.node_adjacency">
+<span class="sig-name descname"><span class="pre">node_adjacency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.node_adjacency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.node_adjacency" title="Permalink to this definition"></a></dt>
+<dd><p>get the node adjacency matrix, inside each element, the nodes are considered fully connected
+:param element_type: the type of the elements</p>
+<blockquote>
+<div><p>if <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a> is the <a class="reference internal" href="#id0" title="torch_fem.mesh.Mesh.default_element_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_element_type</span></code></a>
+default : <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the adjacency matrix of nodes <span class="math notranslate nohighlight">\([|\mathcal V|,|\mathcal V|]\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal V|\)</span> is the number of nodes</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="sparse.html#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">SparseMatrix</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.element_adjacency">
+<span class="sig-name descname"><span class="pre">element_adjacency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.element_adjacency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.element_adjacency" title="Permalink to this definition"></a></dt>
+<dd><p>get the element adjacency matrix, the element are considered connected only if they share a boundary/facet
+:param element_type: the type of the elements, should be of same dimension</p>
+<blockquote>
+<div><p>if <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a> is the <a class="reference internal" href="#id0" title="torch_fem.mesh.Mesh.default_element_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_element_type</span></code></a>
+default : <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the adjacency matrix of elements <span class="math notranslate nohighlight">\([|\mathcal C|,|\mathcal C|]\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal C|\)</span> is the number of elements</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="sparse.html#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">SparseMatrix</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.elements">
+<span class="sig-name descname"><span class="pre">elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.elements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.elements" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>element_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>] or </em><em>None</em>) – the type of the elements
+if None is the <a class="reference internal" href="#torch_fem.mesh.Mesh.default_eletyp" title="torch_fem.mesh.Mesh.default_eletyp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_eletyp</span></code></a> will be used
+default : None</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>if <code class="xref py py-obj docutils literal notranslate"><span class="pre">element_type</span></code> is <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, return the corresponding elements connections of shape <span class="math notranslate nohighlight">\([|\mathcal C|, B]\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal C|\)</span> is the number of elements and <span class="math notranslate nohighlight">\(B\)</span> is the number of basis functions
+if <code class="xref py py-obj docutils literal notranslate"><span class="pre">element_typs</span></code> is <code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterable[str]</span></code>, return the mapping of corresponding elements connections of shape <span class="math notranslate nohighlight">\([|\mathcal C|, B]\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal C|\)</span> is the number of elements and <span class="math notranslate nohighlight">\(B\)</span> is the number of basis functions
+if <code class="xref py py-obj docutils literal notranslate"><span class="pre">element_type</span></code> is <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, the <code class="xref py py-obj docutils literal notranslate"><span class="pre">element_type</span></code> will be the <a class="reference internal" href="#id0" title="torch_fem.mesh.Mesh.default_element_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_element_type</span></code></a> and do as above</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a> or Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, <a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'matplotlib'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_mesh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.plot" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>values</strong> (<em>None</em><em> or </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><em>torch.Tensor</em></a><em>] or </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><em>torch.Tensor</em></a><em>]</em><em>]</em>) – the values to plot, if None, only plot the mesh
+if <code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">torch.Tensor]</span></code>, a static subplots will be plotted, the key is the name of the subplot, the value is of shape <span class="math notranslate nohighlight">\([|\mathcal V|]\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal V|\)</span> is the number of points
+if <code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">List[torch.Tensor]]</span></code>, a mp4/gif will be plotted, the key is the name of the subplot, each item in the list is of shape <span class="math notranslate nohighlight">\([|\mathcal V|]\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal V|\)</span> is the number of points
+default: None</p></li>
+<li><p><strong>save_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><em>None</em>) – the path to save the plot, if None, it will not be saved
+if the <code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code> is passed in as <code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">List[torch.Tensor]]</span></code>, the <code class="xref py py-obj docutils literal notranslate"><span class="pre">save_path</span></code> must endswith ‘.mp4’ or ‘.gif’
+default: None</p></li>
+<li><p><strong>backend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the backend of the plot, must be one of [‘matplotlib’, ‘pyvista’]
+default: ‘matplotlib’</p></li>
+<li><p><strong>dt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> or </em><em>None</em>) – the time interval between each frame, only used when <code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code> is passed in as <code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">List[torch.Tensor]]</span></code>
+default: None</p></li>
+<li><p><strong>show_mesh</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – whether to show the mesh, when <code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code> is passed in as <code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">List[torch.Tensor]]</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">torch.Tensor]</span></code>
+default: False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.n_point">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_point</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.n_point" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the number of nodes/vertices/points <span class="math notranslate nohighlight">\(|\mathcal V|\)</span></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.boundary_mask">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">boundary_mask</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.boundary_mask" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1D tensor of shape <span class="math notranslate nohighlight">\([|\mathcal V|]\)</span>, where  <span class="math notranslate nohighlight">\(|\mathcal V|\)</span> is the number of points
+the mask of the boundary points, <code class="xref py py-obj docutils literal notranslate"><span class="pre">&quot;is_boundary&quot;</span></code> key or <code class="xref py py-obj docutils literal notranslate"><span class="pre">&quot;boundary_mask&quot;</span></code> key is required in <a class="reference internal" href="#torch_fem.mesh.Mesh.point_data" title="torch_fem.mesh.Mesh.point_data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_data</span></code></a></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_element_type</span></span><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the default element type, if the mesh is composed of mixed elements, it will return List[str],
+otherwise it will return str</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> or List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.dtype">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dtype</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.dtype" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the data type of the points, e.g., torch.float32, torch.float64</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://pytorch.org/docs/master/tensor_attributes.html#torch.dtype" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.dtype</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.device">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">device</span></span><a class="headerlink" href="#torch_fem.mesh.Mesh.device" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the device of the points, e.g., torch.device(“cpu”), torch.device(“cuda:0”)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://pytorch.org/docs/master/tensor_attributes.html#torch.device" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.device</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.from_meshio">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_meshio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.from_meshio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.from_meshio" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mesh</strong> (<em>meshio.Mesh</em>) – a meshio mesh object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.read">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.read" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the name of the file</p></li>
+<li><p><strong>file_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the format of the file, e.g., ‘msh’, ‘vtk’, ‘obj’
+default is the file extension</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.from_file">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.from_file" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the name of the file</p></li>
+<li><p><strong>file_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the format of the file, e.g., ‘msh’, ‘vtk’, ‘obj’
+default is the file extension</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.gen_rectangle">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gen_rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chara_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tri'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.gen_rectangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.gen_rectangle" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chara_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the characteristic length of the mesh,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.1</span></code></p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – the order of the basis function,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><strong>element_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the type of the element,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">&quot;tri&quot;</span></code></p></li>
+<li><p><strong>left</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the left boundary of the rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>right</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the right boundary of the rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>bottom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the bottom boundary of the rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>top</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the top boundary of the rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>visualize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to visualize the mesh,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></p></li>
+<li><p><strong>cache_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the path to save the mesh, if <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, it will be decided by <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.dataset.mesh.gen_rectangle()</span></code>,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.gen_hollow_rectangle">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gen_hollow_rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chara_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'quad'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outer_left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outer_right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outer_bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outer_top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.gen_hollow_rectangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.gen_hollow_rectangle" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chara_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the characteristic length of the mesh,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.1</span></code></p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – the order of the basis function,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><strong>element_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the type of the element,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">&quot;quad&quot;</span></code></p></li>
+<li><p><strong>outer_left</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the left boundary of the outer rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>outer_right</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the right boundary of the outer rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>outer_bottom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the bottom boundary of the outer rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>outer_top</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the top boundary of the outer rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>inner_left</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the left boundary of the inner rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.25</span></code></p></li>
+<li><p><strong>inner_right</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the right boundary of the inner rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.75</span></code></p></li>
+<li><p><strong>inner_bottom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the bottom boundary of the inner rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.25</span></code></p></li>
+<li><p><strong>inner_top</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the top boundary of the inner rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.75</span></code></p></li>
+<li><p><strong>visualize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to visualize the mesh,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></p></li>
+<li><p><strong>cache_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the path to save the mesh, if <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, it will be decided by <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.dataset.mesh.gen_hollow_rectangle()</span></code>,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.gen_circle">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gen_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chara_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tri'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.gen_circle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.gen_circle" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chara_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the characteristic length of the mesh,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.1</span></code></p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – the order of the basis function,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><strong>element_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the type of the element,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">&quot;tri&quot;</span></code></p></li>
+<li><p><strong>cx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the x coordinate of the center of the circle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>cy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the y coordinate of the center of the circle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>r</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the radius of the circle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>visualize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to visualize the mesh,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></p></li>
+<li><p><strong>cache_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the path to save the mesh, if <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, it will be decided by <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.dataset.mesh.gen_circle()</span></code>,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.gen_hollow_circle">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gen_hollow_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chara_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'quad'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_inner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_outer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.gen_hollow_circle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.gen_hollow_circle" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chara_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the characteristic length of the mesh,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.1</span></code></p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – the order of the basis function,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><strong>element_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the type of the element,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">&quot;quad&quot;</span></code></p></li>
+<li><p><strong>cx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the x coordinate of the center of the circle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>cy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the y coordinate of the center of the circle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>r_inner</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the inner radius of the circle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>r_outer</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the outer radius of the circle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">2.0</span></code></p></li>
+<li><p><strong>visualize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to visualize the mesh,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></p></li>
+<li><p><strong>cache_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the path to save the mesh, if <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, it will be decided by <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.dataset.mesh.gen_hollow_circle()</span></code>,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.gen_L">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gen_L</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chara_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'quad'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_inner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_inner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.gen_L"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.gen_L" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chara_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the characteristic length of the mesh,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.1</span></code></p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – the order of the basis function,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><strong>element_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the type of the element,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">&quot;quad&quot;</span></code></p></li>
+<li><p><strong>left</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the left boundary of the rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>right</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the right boundary of the rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>bottom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the bottom boundary of the rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>top</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the top boundary of the rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>top_inner</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the top inner boundary of the rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.5</span></code></p></li>
+<li><p><strong>right_inner</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the right inner boundary of the rectangle,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.5</span></code></p></li>
+<li><p><strong>visualize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to visualize the mesh,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></p></li>
+<li><p><strong>cache_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the path to save the mesh, if <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, it will be decided by <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.dataset.mesh.gen_L()</span></code>,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.gen_cube">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gen_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chara_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">front</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">back</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.gen_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.gen_cube" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chara_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the characteristic length of the mesh,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.1</span></code></p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – the order of the basis function,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><strong>left</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the left boundary of the cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>right</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the right boundary of the cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>bottom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the bottom boundary of the cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>top</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the top boundary of the cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>front</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the front boundary of the cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>back</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the back boundary of the cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>visualize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to visualize the mesh,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></p></li>
+<li><p><strong>cache_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the path to save the mesh, if <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, it will be decided by <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.dataset.mesh.gen_cube()</span></code>,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.gen_hollow_cube">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gen_hollow_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chara_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outer_left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outer_right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outer_bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outer_top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outer_front</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outer_back</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_front</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_back</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.gmsh_cache/tmp.msh'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.gen_hollow_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.gen_hollow_cube" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chara_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the characteristic length of the mesh,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.1</span></code></p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – the order of the basis function,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><strong>outer_left</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the left boundary of the outer cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>outer_right</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the right boundary of the outer cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>outer_bottom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the bottom boundary of the outer cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>outer_top</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the top boundary of the outer cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>outer_front</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the front boundary of the outer cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>outer_back</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the back boundary of the outer cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>inner_left</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the left boundary of the inner cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.25</span></code></p></li>
+<li><p><strong>inner_right</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the right boundary of the inner cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.75</span></code></p></li>
+<li><p><strong>inner_bottom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the bottom boundary of the inner cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.25</span></code></p></li>
+<li><p><strong>inner_top</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the top boundary of the inner cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.75</span></code></p></li>
+<li><p><strong>inner_front</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the front boundary of the inner cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.25</span></code></p></li>
+<li><p><strong>inner_back</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the back boundary of the inner cube,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.75</span></code></p></li>
+<li><p><strong>visualize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to visualize the mesh,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></p></li>
+<li><p><strong>cache_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the path to save the mesh, if <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, it will be decided by <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.dataset.mesh.gen_hollow_cube()</span></code>,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.gen_sphere">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gen_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chara_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.gen_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.gen_sphere" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chara_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the characteristic length of the mesh,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.1</span></code></p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – the order of the basis function,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><strong>cx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the x coordinate of the center of the sphere,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>cy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the y coordinate of the center of the sphere,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>cz</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the z coordinate of the center of the sphere,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>r</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the radius of the sphere,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>visualize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to visualize the mesh,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></p></li>
+<li><p><strong>cache_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the path to save the mesh, if <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, it will be decided by <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.dataset.mesh.gen_sphere()</span></code>,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.gen_hollow_sphere">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gen_hollow_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chara_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_inner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_outer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.gen_hollow_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.gen_hollow_sphere" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chara_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the characteristic length of the mesh,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.1</span></code></p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – the order of the basis function,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><strong>cx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the x coordinate of the center of the sphere,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>cy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the y coordinate of the center of the sphere,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>cz</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the z coordinate of the center of the sphere,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
+<li><p><strong>r_inner</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the inner radius of the sphere,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>r_outer</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – the outer radius of the sphere,
+default: <code class="xref py py-obj docutils literal notranslate"><span class="pre">2.0</span></code></p></li>
+<li><p><strong>visualize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to visualize the mesh,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></p></li>
+<li><p><strong>cache_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the path to save the mesh, if <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, it will be decided by <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.dataset.mesh.gen_hollow_sphere()</span></code>,
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dataset.html" class="btn btn-neutral float-left" title="torch_fem.dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sparse.html" class="btn btn-neutral float-right" title="torch_fem.sparse" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, walkerchi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
