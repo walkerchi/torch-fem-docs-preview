@@ -57,12 +57,12 @@
 <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../get_started/introduction.html">Introduction by Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/benchmark.html">Benchmark</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/adjacency.html">Adjacency</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/poisson.html">Poisson Equation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial/heat.html">Heat Equation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/wave.html">Wave Equation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/linear_elasticity.html">Linear Elasticity</a></li>
 </ul>
@@ -76,6 +76,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="assemble.html">torch_fem.assemble</a></li>
 <li class="toctree-l1"><a class="reference internal" href="operator.html">torch_fem.operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode.html">torch_fem.ode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html">torch_fem.functional</a></li>
 </ul>
 
@@ -108,11 +109,11 @@
 <nav class="contents local" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#sparsematirx" id="id3">SparseMatirx</a></p></li>
+<li><p><a class="reference internal" href="#sparsematirx" id="id1">SparseMatirx</a></p></li>
 </ul>
 </nav>
 <section id="sparsematirx">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">SparseMatirx</a><a class="headerlink" href="#sparsematirx" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">SparseMatirx</a><a class="headerlink" href="#sparsematirx" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_fem.sparse.SparseMatrix">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SparseMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/sparse/matrix.html#SparseMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.sparse.SparseMatrix" title="Permalink to this definition"></a></dt>
@@ -207,7 +208,7 @@ the hash of the layout of the sparse matrix</p>
 <dt class="sig sig-object py" id="torch_fem.sparse.SparseMatrix.elementwise_operation">
 <span class="sig-name descname"><span class="pre">elementwise_operation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/sparse/matrix.html#SparseMatrix.elementwise_operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.sparse.SparseMatrix.elementwise_operation" title="Permalink to this definition"></a></dt>
 <dd><p>Elementwise operation with another sparse matrix or a tensor or a scalar
-If the object is a sparse matrix, the <a href="#id1"><span class="problematic" id="id2">:attribute:`edges`</span></a> of the two sparse matrices should be the same</p>
+If the object is a sparse matrix, the <a class="reference internal" href="#torch_fem.sparse.SparseMatrix.edges" title="torch_fem.sparse.SparseMatrix.edges"><code class="xref py py-attr docutils literal notranslate"><span class="pre">edges</span></code></a> of the two sparse matrices should be the same</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -543,14 +544,12 @@ of the sparse matrix, otherwise return <a class="reference external" href="https
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.sparse.SparseMatrix.from_block_coo">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_block_coo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/sparse/matrix.html#SparseMatrix.from_block_coo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.sparse.SparseMatrix.from_block_coo" title="Permalink to this definition"></a></dt>
-<dd><p>Each element in a sparse matrix is a block matrix
-:param edata: 3D float tensor of shape <span class="math notranslate nohighlight">\([|\mathcal E|, C, C]\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal E|\)</span> is the number of edges, <span class="math notranslate nohighlight">\(C\)</span> is the size of the block data</p>
-<blockquote>
-<div><p>the block data</p>
-</div></blockquote>
+<dd><p>Each element in a sparse matrix is a block matrix</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>edata</strong> (<a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><em>torch.Tensor</em></a>) – 3D float tensor of shape <span class="math notranslate nohighlight">\([|\mathcal E|, C, C]\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal E|\)</span> is the number of edges, <span class="math notranslate nohighlight">\(C\)</span> is the size of the block data
+the block data</p></li>
 <li><p><strong>row</strong> (<a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><em>torch.Tensor</em></a>) – 1D int tensor of shape <span class="math notranslate nohighlight">\([|\mathcal E|]\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal E|\)</span> is the number of edges
 the row indices</p></li>
 <li><p><strong>col</strong> (<a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><em>torch.Tensor</em></a>) – 1D int tensor of shape <span class="math notranslate nohighlight">\([|\mathcal E|]\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal E|\)</span> is the number of edges
@@ -565,6 +564,32 @@ the column indices</p></li>
 <dd class="field-odd"><p><a class="reference internal" href="#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.sparse.SparseMatrix.from_dense">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/sparse/matrix.html#SparseMatrix.from_dense"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.sparse.SparseMatrix.from_dense" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tensor</strong> (<a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><em>torch.Tensor</em></a>) – the dense tensor to be converted</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the sparse matrix converted from the dense tensor</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SparseMatrix</span><span class="o">.</span><span class="n">from_dense</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="go">SparseMatrix(</span>
+<span class="go">    edata: tensor([1., 1., 1.])</span>
+<span class="go">    row  : tensor([0, 1, 2])</span>
+<span class="go">    col  : tensor([0, 1, 2])</span>
+<span class="go">    shape: (3, 3)</span>
+<span class="go">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -629,6 +654,140 @@ the column indices</p></li>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.sparse.SparseMatrix.eye">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">eye</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.float32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/sparse/matrix.html#SparseMatrix.eye"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.sparse.SparseMatrix.eye" title="Permalink to this definition"></a></dt>
+<dd><p>generate a sparse identity matrix
+:param n: the number of rows and columns
+:type n: int
+:param value: the value of the diagonal elements, default 1.
+:type value: float, optional
+:param device: the device of the sparse matrix, default cpu
+:type device: str, optional
+:param dtype: the dtype of the sparse matrix, default torch.float
+:type dtype: torch.dtype, optional</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the sparse matrix of shape <span class="math notranslate nohighlight">\([n,n]\)</span> with value <code class="xref py py-obj docutils literal notranslate"><span class="pre">value</span></code> and dtype <a class="reference internal" href="#torch_fem.sparse.SparseMatrix.dtype" title="torch_fem.sparse.SparseMatrix.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">to_dense</span><span class="p">()</span>
+<span class="go">tensor([[1., 0., 0.],</span>
+<span class="go">        [0., 1., 0.],</span>
+<span class="go">        [0., 0., 1.]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.sparse.SparseMatrix.full">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.float32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/sparse/matrix.html#SparseMatrix.full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.sparse.SparseMatrix.full" title="Permalink to this definition"></a></dt>
+<dd><p>generate a dense matrix filled with a value
+:param m: the number of rows
+:type m: int
+:param n: the number of columns
+:type n: int
+:param value: the value of the diagonal elements, default 1.
+:type value: float, optional
+:param device: the device of the sparse matrix, default cpu
+:type device: str, optional
+:param dtype: the dtype of the sparse matrix, default torch.float
+:type dtype: torch.dtype, optional</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the dense tensor of shape <span class="math notranslate nohighlight">\([n,n]\)</span> with value <code class="xref py py-obj docutils literal notranslate"><span class="pre">value</span></code> and dtype <a class="reference internal" href="#torch_fem.sparse.SparseMatrix.dtype" title="torch_fem.sparse.SparseMatrix.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.sparse.SparseMatrix.combine_vector">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">combine_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/sparse/matrix.html#SparseMatrix.combine_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.sparse.SparseMatrix.combine_vector" title="Permalink to this definition"></a></dt>
+<dd><p>Combine sparse matrices into a sparse matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matrices</strong> (<em>List</em><em>[</em><a class="reference internal" href="#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix"><em>torch_fem.sparse.SparseMatrix</em></a><em>]</em>) – the sparse matrices to be combined</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – the axis to combine, can be <code class="xref py py-obj docutils literal notranslate"><span class="pre">0</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">1</span></code>, default <code class="xref py py-obj docutils literal notranslate"><span class="pre">0</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the combined sparse matrix</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SparseMatrix</span><span class="o">.</span><span class="n">combine_vector</span><span class="p">([</span>
+<span class="gp">... </span>    <span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">])</span><span class="o">.</span><span class="n">to_dense</span><span class="p">()</span>
+<span class="go">tensor([[1., 0., 0.],</span>
+<span class="go">        [0., 1., 0.],</span>
+<span class="go">        [0., 0., 1.],</span>
+<span class="go">        [1., 0., 0.],</span>
+<span class="go">        [0., 1., 0.],</span>
+<span class="go">        [0., 0., 1.]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.sparse.SparseMatrix.combine_matrix">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">combine_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/sparse/matrix.html#SparseMatrix.combine_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.sparse.SparseMatrix.combine_matrix" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matrices</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix"><em>torch_fem.sparse.SparseMatrix</em></a><em> or </em><em>None</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>]</em><em>]</em>) – the sparse matrices to be combined</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – the axis to combine, can be <code class="xref py py-obj docutils literal notranslate"><span class="pre">0</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">1</span></code>, default <code class="xref py py-obj docutils literal notranslate"><span class="pre">0</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the combined sparse matrix</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SparseMatrix</span><span class="o">.</span><span class="n">combine_matrix</span><span class="p">([</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="gp">... </span><span class="p">])</span><span class="o">.</span><span class="n">to_dense</span><span class="p">()</span>
+<span class="go">tensor([[1., 0., 0., 1., 0., 0.],</span>
+<span class="go">        [0., 1., 0., 0., 1., 0.],</span>
+<span class="go">        [0., 0., 1., 0., 0., 1.],</span>
+<span class="go">        [1., 0., 0., 1., 0., 0.],</span>
+<span class="go">        [0., 1., 0., 0., 1., 0.],</span>
+<span class="go">        [0., 0., 1., 0., 0., 1.]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.sparse.SparseMatrix.combine">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">combine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/sparse/matrix.html#SparseMatrix.combine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.sparse.SparseMatrix.combine" title="Permalink to this definition"></a></dt>
+<dd><p>the dispatch function for :attribute:combine_vector and :attribute:combine_matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>matrices</strong> (<em>List</em><em>[</em><a class="reference internal" href="#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix"><em>torch_fem.sparse.SparseMatrix</em></a><em> or </em><em>List</em><em>[</em><a class="reference internal" href="#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix"><em>torch_fem.sparse.SparseMatrix</em></a><em> or </em><em>None</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>]</em><em>]</em>) – the sparse matrices to be combined</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the combined sparse matrix</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a></p>
 </dd>
 </dl>
 </dd></dl>

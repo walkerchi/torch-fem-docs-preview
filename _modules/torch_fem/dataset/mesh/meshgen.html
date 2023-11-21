@@ -52,12 +52,12 @@
 <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../get_started/introduction.html">Introduction by Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../get_started/benchmark.html">Benchmark</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/adjacency.html">Adjacency</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/poisson.html">Poisson Equation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/heat.html">Heat Equation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/wave.html">Wave Equation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorial/linear_elasticity.html">Linear Elasticity</a></li>
 </ul>
@@ -68,6 +68,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/sparse.html">torch_fem.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/assemble.html">torch_fem.assemble</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/operator.html">torch_fem.operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/ode.html">torch_fem.ode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api_reference/functional.html">torch_fem.functional</a></li>
 </ul>
 
@@ -162,6 +163,7 @@
            
 <div class="viewcode-block" id="MeshGen.add_rectangle"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.add_rectangle">[docs]</a>    <span class="k">def</span> <span class="nf">add_rectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="s2">&quot;tri&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;add a rectangle to the geometry</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        left: float</span>
@@ -197,6 +199,7 @@
 
 <div class="viewcode-block" id="MeshGen.remove_rectangle"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.remove_rectangle">[docs]</a>    <span class="k">def</span> <span class="nf">remove_rectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;remove the rectangle from the geometry</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        left: float</span>
@@ -223,6 +226,7 @@
 
 <div class="viewcode-block" id="MeshGen.add_circle"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.add_circle">[docs]</a>    <span class="k">def</span> <span class="nf">add_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="s2">&quot;tri&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;add a circle to the geometry</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        cx: float</span>
@@ -255,6 +259,7 @@
 
 <div class="viewcode-block" id="MeshGen.remove_circle"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.remove_circle">[docs]</a>    <span class="k">def</span> <span class="nf">remove_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;remove the cirlce from the geometry</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        cx: float</span>
@@ -279,6 +284,7 @@
 
 <div class="viewcode-block" id="MeshGen.add_cube"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.add_cube">[docs]</a>    <span class="k">def</span> <span class="nf">add_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;add a cube to the geometry, only works for 3d</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        x: float</span>
@@ -308,6 +314,7 @@
 
 <div class="viewcode-block" id="MeshGen.remove_cube"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.remove_cube">[docs]</a>    <span class="k">def</span> <span class="nf">remove_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;remove the cube from the geometry, only works for 3d</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        x: float</span>
@@ -338,6 +345,7 @@
 
 <div class="viewcode-block" id="MeshGen.add_sphere"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.add_sphere">[docs]</a>    <span class="k">def</span> <span class="nf">add_sphere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;add a sphere to the geometry, only works for 3d</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        x: float</span>
@@ -363,6 +371,7 @@
 
 <div class="viewcode-block" id="MeshGen.remove_sphere"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.remove_sphere">[docs]</a>    <span class="k">def</span> <span class="nf">remove_sphere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;remove the sphere from the geometry, only works for 3d</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        x: float</span>
@@ -390,6 +399,7 @@
 
 <div class="viewcode-block" id="MeshGen.gen"><a class="viewcode-back" href="../../../../api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen.gen">[docs]</a>    <span class="k">def</span> <span class="nf">gen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;generate the mesh from the geometry</span>
+<span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        show: bool, optional</span>

@@ -57,12 +57,12 @@
 <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../get_started/introduction.html">Introduction by Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/benchmark.html">Benchmark</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/adjacency.html">Adjacency</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/poisson.html">Poisson Equation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial/heat.html">Heat Equation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/wave.html">Wave Equation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/linear_elasticity.html">Linear Elasticity</a></li>
 </ul>
@@ -77,6 +77,7 @@
 <li class="toctree-l1"><a class="reference internal" href="sparse.html">torch_fem.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="assemble.html">torch_fem.assemble</a></li>
 <li class="toctree-l1"><a class="reference internal" href="operator.html">torch_fem.operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode.html">torch_fem.ode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html">torch_fem.functional</a></li>
 </ul>
 
@@ -159,25 +160,23 @@ the mesh. Default is <span class="math notranslate nohighlight">\(0.1\)</span>.<
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.dataset.mesh.MeshGen.add_rectangle">
 <span class="sig-name descname"><span class="pre">add_rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tri'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/dataset/mesh/meshgen.html#MeshGen.add_rectangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.dataset.mesh.MeshGen.add_rectangle" title="Permalink to this definition"></a></dt>
-<dd><p>add a rectangle to the geometry
-:param left: the left boundary of the rectangle
-:type left: float
-:param bottom: the bottom boundary of the rectangle
-:type bottom: float
-:param width: the width of the rectangle
-:type width: float
-:param height: the height of the rectangle
-:type height: float
-:param element: the type of the element, can be “tri” or “quad”</p>
-<blockquote>
-<div><p>default: “tri”</p>
-</div></blockquote>
+<dd><p>add a rectangle to the geometry</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the mesh generator itself</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>left</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the left boundary of the rectangle</p></li>
+<li><p><strong>bottom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the bottom boundary of the rectangle</p></li>
+<li><p><strong>width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the width of the rectangle</p></li>
+<li><p><strong>height</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the height of the rectangle</p></li>
+<li><p><strong>element</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the type of the element, can be “tri” or “quad”
+default: “tri”</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh generator itself</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -185,21 +184,21 @@ the mesh. Default is <span class="math notranslate nohighlight">\(0.1\)</span>.<
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.dataset.mesh.MeshGen.remove_rectangle">
 <span class="sig-name descname"><span class="pre">remove_rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/dataset/mesh/meshgen.html#MeshGen.remove_rectangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.dataset.mesh.MeshGen.remove_rectangle" title="Permalink to this definition"></a></dt>
-<dd><p>remove the rectangle from the geometry
-:param left: the left boundary of the rectangle
-:type left: float
-:param bottom: the bottom boundary of the rectangle
-:type bottom: float
-:param width: the width of the rectangle
-:type width: float
-:param height: the height of the rectangle
-:type height: float</p>
+<dd><p>remove the rectangle from the geometry</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the mesh generator itself</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>left</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the left boundary of the rectangle</p></li>
+<li><p><strong>bottom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the bottom boundary of the rectangle</p></li>
+<li><p><strong>width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the width of the rectangle</p></li>
+<li><p><strong>height</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the height of the rectangle</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh generator itself</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -207,23 +206,22 @@ the mesh. Default is <span class="math notranslate nohighlight">\(0.1\)</span>.<
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.dataset.mesh.MeshGen.add_circle">
 <span class="sig-name descname"><span class="pre">add_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tri'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/dataset/mesh/meshgen.html#MeshGen.add_circle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.dataset.mesh.MeshGen.add_circle" title="Permalink to this definition"></a></dt>
-<dd><p>add a circle to the geometry
-:param cx: the x coordinate of the center
-:type cx: float
-:param cy: the y coordinate of the center
-:type cy: float
-:param r: the radius of the circle
-:type r: float
-:param element: the type of the element, can be “tri” or “quad”</p>
-<blockquote>
-<div><p>default: “tri”</p>
-</div></blockquote>
+<dd><p>add a circle to the geometry</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the mesh generator itself</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the x coordinate of the center</p></li>
+<li><p><strong>cy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the y coordinate of the center</p></li>
+<li><p><strong>r</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the radius of the circle</p></li>
+<li><p><strong>element</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – the type of the element, can be “tri” or “quad”
+default: “tri”</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh generator itself</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -231,19 +229,20 @@ the mesh. Default is <span class="math notranslate nohighlight">\(0.1\)</span>.<
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.dataset.mesh.MeshGen.remove_circle">
 <span class="sig-name descname"><span class="pre">remove_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/dataset/mesh/meshgen.html#MeshGen.remove_circle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.dataset.mesh.MeshGen.remove_circle" title="Permalink to this definition"></a></dt>
-<dd><p>remove the cirlce from the geometry
-:param cx: the x coordinate of the center
-:type cx: float
-:param cy: the y coordinate of the center
-:type cy: float
-:param r: the radius of the circle
-:type r: float</p>
+<dd><p>remove the cirlce from the geometry</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the mesh generator itself</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the x coordinate of the center</p></li>
+<li><p><strong>cy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the y coordinate of the center</p></li>
+<li><p><strong>r</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the radius of the circle</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh generator itself</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -251,25 +250,23 @@ the mesh. Default is <span class="math notranslate nohighlight">\(0.1\)</span>.<
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.dataset.mesh.MeshGen.add_cube">
 <span class="sig-name descname"><span class="pre">add_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/dataset/mesh/meshgen.html#MeshGen.add_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.dataset.mesh.MeshGen.add_cube" title="Permalink to this definition"></a></dt>
-<dd><p>add a cube to the geometry, only works for 3d
-:param x: the x coordinate of the center
-:type x: float
-:param y: the y coordinate of the center
-:type y: float
-:param z: the z coordinate of the center
-:type z: float
-:param dx: the width of the cube
-:type dx: float
-:param dy: the height of the cube
-:type dy: float
-:param dz: the depth of the cube
-:type dz: float</p>
+<dd><p>add a cube to the geometry, only works for 3d</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the mesh generator itself</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the x coordinate of the center</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the y coordinate of the center</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the z coordinate of the center</p></li>
+<li><p><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the width of the cube</p></li>
+<li><p><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the height of the cube</p></li>
+<li><p><strong>dz</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the depth of the cube</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh generator itself</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -277,25 +274,23 @@ the mesh. Default is <span class="math notranslate nohighlight">\(0.1\)</span>.<
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.dataset.mesh.MeshGen.remove_cube">
 <span class="sig-name descname"><span class="pre">remove_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/dataset/mesh/meshgen.html#MeshGen.remove_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.dataset.mesh.MeshGen.remove_cube" title="Permalink to this definition"></a></dt>
-<dd><p>remove the cube from the geometry, only works for 3d
-:param x: the x coordinate of the center
-:type x: float
-:param y: the y coordinate of the center
-:type y: float
-:param z: the z coordinate of the center
-:type z: float
-:param dx: the width of the cube
-:type dx: float
-:param dy: the height of the cube
-:type dy: float
-:param dz: the depth of the cube
-:type dz: float</p>
+<dd><p>remove the cube from the geometry, only works for 3d</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the mesh generator itself</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the x coordinate of the center</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the y coordinate of the center</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the z coordinate of the center</p></li>
+<li><p><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the width of the cube</p></li>
+<li><p><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the height of the cube</p></li>
+<li><p><strong>dz</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the depth of the cube</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh generator itself</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -303,21 +298,21 @@ the mesh. Default is <span class="math notranslate nohighlight">\(0.1\)</span>.<
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.dataset.mesh.MeshGen.add_sphere">
 <span class="sig-name descname"><span class="pre">add_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/dataset/mesh/meshgen.html#MeshGen.add_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.dataset.mesh.MeshGen.add_sphere" title="Permalink to this definition"></a></dt>
-<dd><p>add a sphere to the geometry, only works for 3d
-:param x: the x coordinate of the center
-:type x: float
-:param y: the y coordinate of the center
-:type y: float
-:param z: the z coordinate of the center
-:type z: float
-:param r: the radius of the sphere
-:type r: float</p>
+<dd><p>add a sphere to the geometry, only works for 3d</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the mesh generator itself</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the x coordinate of the center</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the y coordinate of the center</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the z coordinate of the center</p></li>
+<li><p><strong>r</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the radius of the sphere</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh generator itself</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -325,21 +320,21 @@ the mesh. Default is <span class="math notranslate nohighlight">\(0.1\)</span>.<
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.dataset.mesh.MeshGen.remove_sphere">
 <span class="sig-name descname"><span class="pre">remove_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/dataset/mesh/meshgen.html#MeshGen.remove_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.dataset.mesh.MeshGen.remove_sphere" title="Permalink to this definition"></a></dt>
-<dd><p>remove the sphere from the geometry, only works for 3d
-:param x: the x coordinate of the center
-:type x: float
-:param y: the y coordinate of the center
-:type y: float
-:param z: the z coordinate of the center
-:type z: float
-:param r: the radius of the sphere
-:type r: float</p>
+<dd><p>remove the sphere from the geometry, only works for 3d</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the mesh generator itself</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the x coordinate of the center</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the y coordinate of the center</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the z coordinate of the center</p></li>
+<li><p><strong>r</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the radius of the sphere</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mesh generator itself</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_fem.dataset.mesh.MeshGen" title="torch_fem.dataset.mesh.MeshGen">MeshGen</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -347,17 +342,17 @@ the mesh. Default is <span class="math notranslate nohighlight">\(0.1\)</span>.<
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.dataset.mesh.MeshGen.gen">
 <span class="sig-name descname"><span class="pre">gen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/dataset/mesh/meshgen.html#MeshGen.gen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.dataset.mesh.MeshGen.gen" title="Permalink to this definition"></a></dt>
-<dd><p>generate the mesh from the geometry
-:param show: whether to show the mesh in the gmsh gui</p>
-<blockquote>
-<div><p>default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></p>
-</div></blockquote>
+<dd><p>generate the mesh from the geometry</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the generated mesh</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>show</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to show the mesh in the gmsh gui
+default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="mesh.html#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the generated mesh</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="mesh.html#torch_fem.mesh.Mesh" title="torch_fem.mesh.Mesh">torch_fem.mesh.Mesh</a></p>
 </dd>
 </dl>
 </dd></dl>

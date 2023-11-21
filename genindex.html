@@ -68,6 +68,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api_reference/sparse.html">torch_fem.sparse</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference/assemble.html">torch_fem.assemble</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference/operator.html">torch_fem.operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference/ode.html">torch_fem.ode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference/functional.html">torch_fem.functional</a></li>
 </ul>
 
@@ -152,9 +153,15 @@
 </li>
       <li><a href="api_reference/mesh.html#torch_fem.mesh.Mesh.cells">cells (Mesh attribute)</a>
 </li>
+      <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.col">col (SparseMatrix attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.col">col (SparseMatrix attribute)</a>
+      <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.combine">combine() (SparseMatrix static method)</a>
+</li>
+      <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.combine_matrix">combine_matrix() (SparseMatrix static method)</a>
+</li>
+      <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.combine_vector">combine_vector() (SparseMatrix static method)</a>
 </li>
       <li><a href="api_reference/operator.html#torch_fem.operator.Condenser.condense_rhs">condense_rhs() (Condenser method)</a>
 </li>
@@ -234,10 +241,10 @@
         <li><a href="api_reference/assemble.html#torch_fem.assemble.node_assembler.NodeAssembler.element_types">(NodeAssembler attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/assemble.html#torch_fem.assemble.element_assembler.ElementAssembler">ElementAssembler (class in torch_fem.assemble.element_assembler)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/assemble.html#torch_fem.assemble.element_assembler.ElementAssembler.elements">elements (ElementAssembler attribute)</a>
 
       <ul>
@@ -248,8 +255,16 @@
 </li>
       <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.elementwise_operation">elementwise_operation() (SparseMatrix method)</a>
 </li>
-      <li><a href="api_reference/functional.html#torch_fem.functional.assemble_helpers.eye">eye() (in module torch_fem.functional.assemble_helpers)</a>
+      <li><a href="api_reference/ode.html#torch_fem.ode.builtin.ExplicitEuler">ExplicitEuler (class in torch_fem.ode.builtin)</a>
 </li>
+      <li><a href="api_reference/ode.html#torch_fem.ode.ExplicitRungeKutta">ExplicitRungeKutta (class in torch_fem.ode)</a>
+</li>
+      <li><a href="api_reference/functional.html#torch_fem.functional.assemble_helpers.eye">eye() (in module torch_fem.functional.assemble_helpers)</a>
+
+      <ul>
+        <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.eye">(SparseMatrix static method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -261,6 +276,8 @@
       <li><a href="api_reference/assemble.html#torch_fem.assemble.element_assembler.ElementAssembler.forward">forward() (ElementAssembler method)</a>
 
       <ul>
+        <li><a href="api_reference/ode.html#torch_fem.ode.ExplicitRungeKutta.forward">(ExplicitRungeKutta method)</a>
+</li>
         <li><a href="api_reference/assemble.html#torch_fem.assemble.builtin.LaplaceElementAssembler.forward">(LaplaceElementAssembler method)</a>
 </li>
         <li><a href="api_reference/assemble.html#torch_fem.assemble.builtin.MassElementAssembler.forward">(MassElementAssembler method)</a>
@@ -268,15 +285,27 @@
         <li><a href="api_reference/assemble.html#torch_fem.assemble.node_assembler.NodeAssembler.forward">(NodeAssembler method)</a>
 </li>
       </ul></li>
+      <li><a href="api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta.forward_A">forward_A() (ImplicitLinearRungeKutta method)</a>
+</li>
+      <li><a href="api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta.forward_B">forward_B() (ImplicitLinearRungeKutta method)</a>
+</li>
+      <li><a href="api_reference/ode.html#torch_fem.ode.ExplicitRungeKutta.forward_M">forward_M() (ExplicitRungeKutta method)</a>
+
+      <ul>
+        <li><a href="api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta.forward_M">(ImplicitLinearRungeKutta method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/assemble.html#torch_fem.assemble.element_assembler.ElementAssembler.from_assembler">from_assembler() (ElementAssembler class method)</a>
 
       <ul>
         <li><a href="api_reference/assemble.html#torch_fem.assemble.node_assembler.NodeAssembler.from_assembler">(NodeAssembler class method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.from_block_coo">from_block_coo() (SparseMatrix static method)</a>
+</li>
+      <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.from_dense">from_dense() (SparseMatrix static method)</a>
 </li>
       <li><a href="api_reference/mesh.html#torch_fem.mesh.Mesh.from_file">from_file() (Mesh class method)</a>
 </li>
@@ -289,6 +318,8 @@
       <li><a href="api_reference/mesh.html#torch_fem.mesh.Mesh.from_meshio">from_meshio() (Mesh class method)</a>
 </li>
       <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.from_sparse_coo">from_sparse_coo() (SparseMatrix static method)</a>
+</li>
+      <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.full">full() (SparseMatrix static method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -342,6 +373,12 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_reference/ode.html#torch_fem.ode.builtin.ImplicitLinearEuler">ImplicitLinearEuler (class in torch_fem.ode.builtin)</a>
+</li>
+      <li><a href="api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta">ImplicitLinearRungeKutta (class in torch_fem.ode)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/dataset.html#torch_fem.dataset.equation.HeatMultiFrequency.initial_condition">initial_condition() (HeatMultiFrequency method)</a>
 
       <ul>
@@ -376,15 +413,19 @@
 </li>
       <li><a href="api_reference/mesh.html#torch_fem.mesh.Mesh">Mesh (class in torch_fem.mesh)</a>
 </li>
+      <li><a href="api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen">MeshGen (class in torch_fem.dataset.mesh)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/dataset.html#torch_fem.dataset.mesh.MeshGen">MeshGen (class in torch_fem.dataset.mesh)</a>
+      <li><a href="api_reference/ode.html#torch_fem.ode.builtin.MidPointLinearEuler">MidPointLinearEuler (class in torch_fem.ode.builtin)</a>
 </li>
       <li>
     module
 
       <ul>
         <li><a href="api_reference/functional.html#module-torch_fem.functional.assemble_helpers">torch_fem.functional.assemble_helpers</a>
+</li>
+        <li><a href="api_reference/ode.html#module-torch_fem.ode.builtin">torch_fem.ode.builtin</a>
 </li>
       </ul></li>
       <li><a href="api_reference/functional.html#torch_fem.functional.assemble_helpers.mul">mul() (in module torch_fem.functional.assemble_helpers)</a>
@@ -521,6 +562,12 @@
 </li>
       <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.sqrt">sqrt() (SparseMatrix method)</a>
 </li>
+      <li><a href="api_reference/ode.html#torch_fem.ode.ExplicitRungeKutta.step">step() (ExplicitRungeKutta method)</a>
+
+      <ul>
+        <li><a href="api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta.step">(ImplicitLinearRungeKutta method)</a>
+</li>
+      </ul></li>
       <li><a href="api_reference/sparse.html#torch_fem.sparse.SparseMatrix.sum">sum() (SparseMatrix method)</a>
 </li>
       <li><a href="api_reference/functional.html#torch_fem.functional.assemble_helpers.sym">sym() (in module torch_fem.functional.assemble_helpers)</a>
@@ -552,6 +599,13 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    torch_fem.ode.builtin
+
+      <ul>
+        <li><a href="api_reference/ode.html#module-torch_fem.ode.builtin">module</a>
+</li>
+      </ul></li>
       <li><a href="api_reference/functional.html#torch_fem.functional.assemble_helpers.trace">trace() (in module torch_fem.functional.assemble_helpers)</a>
 </li>
       <li><a href="api_reference/functional.html#torch_fem.functional.assemble_helpers.transpose">transpose() (in module torch_fem.functional.assemble_helpers)</a>
