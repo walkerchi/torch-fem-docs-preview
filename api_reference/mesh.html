@@ -362,6 +362,14 @@ if <code class="xref py py-obj docutils literal notranslate"><span class="pre">e
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.mesh.Mesh.clone">
+<span class="sig-name descname"><span class="pre">clone</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.clone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.clone" title="Permalink to this definition"></a></dt>
+<dd><p>The gradient will vanish if you use <a class="reference external" href="https://pytorch.org/docs/master/generated/torch.Tensor.clone.html#torch.Tensor.clone" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.Tensor.clone</span></code></a> to clone the mesh, so we provide this method to clone the mesh
+:returns: the cloned mesh
+:rtype: torch_fem.mesh.Mesh</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.mesh.Mesh.plot">
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'matplotlib'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_mesh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/mesh/mesh.html#Mesh.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.mesh.Mesh.plot" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">

@@ -104,11 +104,11 @@
 
 
 <div class="viewcode-block" id="LaplaceElementAssembler"><a class="viewcode-back" href="../../../api_reference/assemble.html#torch_fem.assemble.builtin.LaplaceElementAssembler">[docs]</a><span class="k">class</span> <span class="nc">LaplaceElementAssembler</span><span class="p">(</span><span class="n">ElementAssembler</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The element laplace assembler</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The element laplace assembler</span>
 
 <span class="sd">    .. math::</span>
 <span class="sd">    </span>
-<span class="sd">        K = \\int_{\\Omega}\\nabla u \\cdot \\nabla v \\mathrm{d}x</span>
+<span class="sd">        K = \int_{\Omega}\nabla u \cdot \nabla v \mathrm{d}v</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="LaplaceElementAssembler.forward"><a class="viewcode-back" href="../../../api_reference/assemble.html#torch_fem.assemble.builtin.LaplaceElementAssembler.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradu</span><span class="p">,</span> <span class="n">gradv</span><span class="p">):</span>
@@ -116,18 +116,32 @@
         <span class="k">return</span> <span class="n">K</span></div></div>
     
 <div class="viewcode-block" id="MassElementAssembler"><a class="viewcode-back" href="../../../api_reference/assemble.html#torch_fem.assemble.builtin.MassElementAssembler">[docs]</a><span class="k">class</span> <span class="nc">MassElementAssembler</span><span class="p">(</span><span class="n">ElementAssembler</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The element mass assembler</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The element mass assembler</span>
 <span class="sd">    </span>
 <span class="sd">    .. math::</span>
 <span class="sd">        </span>
-<span class="sd">        K = \\int_{\\Omega} u v \\mathrm{d}x</span>
+<span class="sd">        K = \int_{\Omega} u v \mathrm{d}v</span>
 <span class="sd">        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="MassElementAssembler.forward"><a class="viewcode-back" href="../../../api_reference/assemble.html#torch_fem.assemble.builtin.MassElementAssembler.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="n">K</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">K</span></div></div>
     
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;LaplaceElementAssembler&quot;</span><span class="p">,</span> <span class="s2">&quot;MassElementAssembler&quot;</span><span class="p">]</span>
+<span class="k">class</span> <span class="nc">ConstNodeAssembler</span><span class="p">(</span><span class="n">NodeAssembler</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The const node assembler</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+
+<span class="sd">        f = \int_{\Omega} c\cdot u \mathrm{d}v</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="n">c</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">*</span> <span class="n">u</span>
+        <span class="k">return</span> <span class="n">f</span>
+    
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;LaplaceElementAssembler&quot;</span><span class="p">,</span> <span class="s2">&quot;MassElementAssembler&quot;</span><span class="p">,</span> <span class="s2">&quot;ConstNodeAssembler&quot;</span><span class="p">]</span>
 </pre></div>
 
            </div>

@@ -143,7 +143,7 @@ c_s &amp; a_{s1} &amp; \cdots &amp; a_{ss}\\\hline
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExplicitRungeKutta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/ode/explicit_rungekutta.html#ExplicitRungeKutta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.ode.ExplicitRungeKutta" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <div class="math notranslate nohighlight">
-\[M(t)\frac{\partial u}{\partial t} = f(t, u)\]</div>
+\[\frac{\partial u}{\partial t} = f(t, u)\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -162,30 +162,12 @@ a_{s1} &amp; \cdots &amp; a_{s{s-1}} &amp;0
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="torch_fem.ode.ExplicitRungeKutta.forward_M">
-<span class="sig-name descname"><span class="pre">forward_M</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/ode/explicit_rungekutta.html#ExplicitRungeKutta.forward_M"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.ode.ExplicitRungeKutta.forward_M" title="Permalink to this definition"></a></dt>
-<dd><p>left side function</p>
-<div class="math notranslate nohighlight">
-\[M \frac{\partial u}{\partial t} = \text{forward}(t, u)\]</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>normally, 2D <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.Tensor()</span></code> or <a class="reference internal" href="sparse.html#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.sparse.SparseMatrix()</span></code></a> of shape <span class="math notranslate nohighlight">\([D, D]\)</span> where <span class="math notranslate nohighlight">\(D\)</span> is the dimension of the problem;
-if return <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, the left side matrix <span class="math notranslate nohighlight">\(M\)</span> is assumed to be the identity;
-if return <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>, the left side matrix <span class="math notranslate nohighlight">\(M\)</span> is assumed to be a diagonal matrix with the same value</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="sparse.html#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a> or <a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a> or None or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.ode.ExplicitRungeKutta.forward">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/ode/explicit_rungekutta.html#ExplicitRungeKutta.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.ode.ExplicitRungeKutta.forward" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/ode/explicit_rungekutta.html#ExplicitRungeKutta.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.ode.ExplicitRungeKutta.forward" title="Permalink to this definition"></a></dt>
 <dd><p>right side function <span class="math notranslate nohighlight">\(f(t, u)\)</span></p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial u}{\partial t} = \text{forward}(t, u)\]</div>
+<p>default <span class="math notranslate nohighlight">\(f(t, u) = u\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -233,6 +215,30 @@ the value of the solution at time <span class="math notranslate nohighlight">\(t
 <dt class="sig sig-object py" id="torch_fem.ode.ImplicitLinearRungeKutta">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ImplicitLinearRungeKutta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/ode/implicit_linear_rungekutta.html#ImplicitLinearRungeKutta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.ode.ImplicitLinearRungeKutta" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<div class="math notranslate nohighlight">
+\[M(t) \frac{\partial u}{\partial t} = A(t) u + B(t)\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(M\in \mathbb R^{n\times n}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(A\in \mathbb R^{n\times n}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(B\in \mathbb R^{n}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(u\in \mathbb R^n\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+M_0 - A_0\tau a_{0,0}&amp; - A_0\tau a_{0,1}&amp;\cdots  &amp; - A_{0}\tau a_{0,{n-1}}\\
+-A_1\tau a_{1,0}&amp; M_1-A_1\tau a_{1,1} &amp; \cdots &amp; - A_{1}\tau a_{1,{n-1}}\\
+\vdots &amp; \vdots &amp;\ddots &amp; \vdots \\
+-A_{n-1}\tau a_{{n-1},0} &amp; -A_{n-1}\tau a_{{n-1},1} &amp; \cdots &amp;  M_{n-1} - A_{n-1}\tau a_{n-1,n-1}
+\end{bmatrix}
+\begin{bmatrix}
+\textbf k_0\\ \textbf k_1 \\\vdots \\\textbf k_{n-1}
+\end{bmatrix}=
+\begin{bmatrix}
+B_0 + A_0 u \\
+B_1 + A_1 u \\
+\vdots\\
+B_{n-1} + A_{n-1} u
+\end{bmatrix}\end{split}\]</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_fem.ode.ImplicitLinearRungeKutta.forward_M">
 <span class="sig-name descname"><span class="pre">forward_M</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/ode/implicit_linear_rungekutta.html#ImplicitLinearRungeKutta.forward_M"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.ode.ImplicitLinearRungeKutta.forward_M" title="Permalink to this definition"></a></dt>
@@ -245,11 +251,10 @@ the value of the solution at time <span class="math notranslate nohighlight">\(t
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>normally, 2D <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.Tensor()</span></code> or <a class="reference internal" href="sparse.html#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.sparse.SparseMatrix()</span></code></a> of shape <span class="math notranslate nohighlight">\([D, D]\)</span> where <span class="math notranslate nohighlight">\(D\)</span> is the dimension of the problem;
-if return <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, the left side matrix <span class="math notranslate nohighlight">\(M\)</span> is assumed to be the identity;
 if return <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>, the left side matrix <span class="math notranslate nohighlight">\(M\)</span> is assumed to be a diagonal matrix with the same value</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="sparse.html#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a> or <a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a> or None or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="sparse.html#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a> or <a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -259,18 +264,17 @@ if return <a class="reference external" href="https://docs.python.org/3/library/
 <span class="sig-name descname"><span class="pre">forward_A</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/ode/implicit_linear_rungekutta.html#ImplicitLinearRungeKutta.forward_A"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.ode.ImplicitLinearRungeKutta.forward_A" title="Permalink to this definition"></a></dt>
 <dd><p>compute the linear mapping term <span class="math notranslate nohighlight">\(A(t)\)</span></p>
 <div class="math notranslate nohighlight">
-\[f(t, u) = A(t)u + B(t)\]</div>
+\[M \frac{\partial u}{\partial t} = A(t)u + B(t)\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>2D <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.Tensor()</span></code> or <a class="reference internal" href="sparse.html#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torch_fem.sparse.SparseMatrix()</span></code></a> of shape <span class="math notranslate nohighlight">\([D, D]\)</span> where <span class="math notranslate nohighlight">\(D\)</span> is the dimension of the problem;
-if return <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, the linear mapping term is assumed to be the zero matrix;
 if return <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>, the linear mapping term is assumed to be a diagonal matrix with the same value</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="sparse.html#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a> or <a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a> or None or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="sparse.html#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a> or <a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -280,18 +284,71 @@ if return <a class="reference external" href="https://docs.python.org/3/library/
 <span class="sig-name descname"><span class="pre">forward_B</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/ode/implicit_linear_rungekutta.html#ImplicitLinearRungeKutta.forward_B"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.ode.ImplicitLinearRungeKutta.forward_B" title="Permalink to this definition"></a></dt>
 <dd><p>compute the linear mapping term <span class="math notranslate nohighlight">\(B(t)\)</span></p>
 <div class="math notranslate nohighlight">
-\[f(t, u) = A(t)u + B(t)\]</div>
+\[M \frac{\partial u}{\partial t} = A(t)u + B(t)\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – time</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>1D <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.Tensor()</span></code> of shape <span class="math notranslate nohighlight">\([D]\)</span> where <span class="math notranslate nohighlight">\(D\)</span> is the dimension of the problem;
-if return <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, the linear mapping term is assumed to be the zero vector;
 if return <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>, the linear mapping term is assumed to be a vector with the same value</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a> or None or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.ode.ImplicitLinearRungeKutta.pre_solve_lhs">
+<span class="sig-name descname"><span class="pre">pre_solve_lhs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">K</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/ode/implicit_linear_rungekutta.html#ImplicitLinearRungeKutta.pre_solve_lhs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.ode.ImplicitLinearRungeKutta.pre_solve_lhs" title="Permalink to this definition"></a></dt>
+<dd><p>precompute something before solving the linear system,
+for example, do the condensation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>K</strong> (<a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><em>torch.Tensor</em></a><em> or </em><a class="reference internal" href="sparse.html#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix"><em>torch_fem.sparse.SparseMatrix</em></a>) – the left side matrix</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the left side matrix after precompute</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a> or <a class="reference internal" href="sparse.html#torch_fem.sparse.SparseMatrix" title="torch_fem.sparse.SparseMatrix">torch_fem.sparse.SparseMatrix</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.ode.ImplicitLinearRungeKutta.pre_solve_rhs">
+<span class="sig-name descname"><span class="pre">pre_solve_rhs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/ode/implicit_linear_rungekutta.html#ImplicitLinearRungeKutta.pre_solve_rhs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.ode.ImplicitLinearRungeKutta.pre_solve_rhs" title="Permalink to this definition"></a></dt>
+<dd><p>precompute something before solving the linear system,
+for example, do the condensation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>f</strong> (<a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><em>torch.Tensor</em></a>) – the right hand side vector</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the right hand side vector after precompute</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_fem.ode.ImplicitLinearRungeKutta.post_solve">
+<span class="sig-name descname"><span class="pre">post_solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_fem/ode/implicit_linear_rungekutta.html#ImplicitLinearRungeKutta.post_solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_fem.ode.ImplicitLinearRungeKutta.post_solve" title="Permalink to this definition"></a></dt>
+<dd><p>postprocess after solving the linear system,
+for example, do the condensation recovery</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>u</strong> (<a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))"><em>torch.Tensor</em></a>) – the solution of the linear system</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the solution after postprocess</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/master/tensors.html#torch.Tensor" title="(in PyTorch vmaster (2.1.0a0+gitbe0b12e ))">torch.Tensor</a></p>
 </dd>
 </dl>
 </dd></dl>

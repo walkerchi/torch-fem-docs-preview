@@ -104,10 +104,10 @@
 
 
 <div class="viewcode-block" id="ExplicitRungeKutta"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ExplicitRungeKutta">[docs]</a><span class="k">class</span> <span class="nc">ExplicitRungeKutta</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. math::</span>
 
-<span class="sd">        M(t)\\frac{\\partial u}{\\partial t} = f(t, u)</span>
+<span class="sd">       \frac{\partial u}{\partial t} = f(t, u)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -117,15 +117,15 @@
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            a = \\begin{bmatrix}</span>
-<span class="sd">            0 &amp; \\cdots &amp;0&amp; 0 \\\\</span>
-<span class="sd">            a_{21} &amp; \\cdots &amp;0 &amp; 0 \\\\</span>
-<span class="sd">            \\vdots &amp; \\ddots &amp; \\vdots  &amp;\\vdots\\\\</span>
-<span class="sd">            a_{s1} &amp; \\cdots &amp; a_{s{s-1}} &amp;0</span>
-<span class="sd">            \\end{bmatrix}</span>
+<span class="sd">            a = \begin{bmatrix}</span>
+<span class="sd">            0 &amp; \cdots &amp;0&amp; 0 \\</span>
+<span class="sd">            a_{21} &amp; \cdots &amp;0 &amp; 0 \\</span>
+<span class="sd">            \vdots &amp; \ddots &amp; \vdots  &amp;\vdots\\</span>
+<span class="sd">            a_{s1} &amp; \cdots &amp; a_{s{s-1}} &amp;0</span>
+<span class="sd">            \end{bmatrix}</span>
 
 <span class="sd">    b : torch.Tensor</span>
-<span class="sd">        1D tensor of shape [s], :math:`\\sum_{b_i} = 1`</span>
+<span class="sd">        1D tensor of shape [s], :math:`\sum_{b_i} = 1`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;expected a to be 2D tensor, got </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -146,29 +146,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
-<div class="viewcode-block" id="ExplicitRungeKutta.forward_M"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ExplicitRungeKutta.forward_M">[docs]</a>    <span class="k">def</span> <span class="nf">forward_M</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;left side function </span>
+
+<div class="viewcode-block" id="ExplicitRungeKutta.forward"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ExplicitRungeKutta.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;right side function :math:`f(t, u)`</span>
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            M \\frac{\partial u}{\partial t} = \\text{forward}(t, u)</span>
+<span class="sd">           \frac{\partial u}{\partial t} = \text{forward}(t, u)</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        t : float</span>
-<span class="sd">            time</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        torch_fem.sparse.SparseMatrix or torch.Tensor or None or float or int</span>
-<span class="sd">            normally, 2D :meth:`torch.Tensor` or :meth:`torch_fem.sparse.SparseMatrix` of shape :math:`[D, D]` where :math:`D` is the dimension of the problem;</span>
-<span class="sd">            if return :obj:`None`, the left side matrix :math:`M` is assumed to be the identity;</span>
-<span class="sd">            if return :obj:`int` or :obj:`float`, the left side matrix :math:`M` is assumed to be a diagonal matrix with the same value</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
-
-<div class="viewcode-block" id="ExplicitRungeKutta.forward"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ExplicitRungeKutta.forward">[docs]</a>    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;right side function :math:`f(t, u)`</span>
+<span class="sd">        default :math:`f(t, u) = u`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -184,7 +170,7 @@
 <span class="sd">            value of shape :math:`[D]` where D is the dimension of the problem</span>
 <span class="sd">            the value of the right side function :math:`f(t, u)`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="n">u</span></div>
     
 <div class="viewcode-block" id="ExplicitRungeKutta.step"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ExplicitRungeKutta.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">u0</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;one step of explicit Runge-Kutta method</span>
@@ -214,22 +200,12 @@
         <span class="n">k</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">):</span>
             <span class="n">ci</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">M</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_M</span><span class="p">(</span><span class="n">t0</span> <span class="o">+</span> <span class="n">ci</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
+          
             <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">t0</span> <span class="o">+</span> <span class="n">ci</span> <span class="o">*</span> <span class="n">h</span><span class="p">,</span> <span class="n">u0</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">t0</span> <span class="o">+</span> <span class="n">ci</span> <span class="o">*</span> <span class="n">h</span><span class="p">,</span> <span class="n">u0</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:</span><span class="n">i</span><span class="p">]</span> <span class="o">@</span> <span class="n">k</span><span class="p">[:</span><span class="n">i</span><span class="p">])</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">SparseMatrix</span><span class="p">):</span>
-                <span class="n">k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">M</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
-                <span class="n">k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">M</span><span class="p">,</span>  <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-                <span class="n">k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">f</span> <span class="o">/</span> <span class="n">M</span>
-            <span class="k">elif</span> <span class="n">M</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">f</span>
-            
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;expected lhs to be SparseMatrix or torch.Tensor or None, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">M</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">f</span> 
         <span class="n">u</span> <span class="o">=</span> <span class="n">u0</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">@</span> <span class="n">k</span>
         <span class="k">return</span> <span class="n">u</span></div></div>
     

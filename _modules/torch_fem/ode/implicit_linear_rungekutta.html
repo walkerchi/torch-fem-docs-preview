@@ -104,6 +104,35 @@
 
 
 <div class="viewcode-block" id="ImplicitLinearRungeKutta"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta">[docs]</a><span class="k">class</span> <span class="nc">ImplicitLinearRungeKutta</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        M(t) \frac{\partial u}{\partial t} = A(t) u + B(t)</span>
+
+<span class="sd">    * :math:`M\in \mathbb R^{n\times n}`</span>
+<span class="sd">    * :math:`A\in \mathbb R^{n\times n}`</span>
+<span class="sd">    * :math:`B\in \mathbb R^{n}`</span>
+<span class="sd">    * :math:`u\in \mathbb R^n`</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \begin{bmatrix}</span>
+<span class="sd">        M_0 - A_0\tau a_{0,0}&amp; - A_0\tau a_{0,1}&amp;\cdots  &amp; - A_{0}\tau a_{0,{n-1}}\\</span>
+<span class="sd">        -A_1\tau a_{1,0}&amp; M_1-A_1\tau a_{1,1} &amp; \cdots &amp; - A_{1}\tau a_{1,{n-1}}\\</span>
+<span class="sd">        \vdots &amp; \vdots &amp;\ddots &amp; \vdots \\</span>
+<span class="sd">        -A_{n-1}\tau a_{{n-1},0} &amp; -A_{n-1}\tau a_{{n-1},1} &amp; \cdots &amp;  M_{n-1} - A_{n-1}\tau a_{n-1,n-1}</span>
+<span class="sd">        \end{bmatrix}</span>
+<span class="sd">        \begin{bmatrix}</span>
+<span class="sd">        \textbf k_0\\ \textbf k_1 \\\vdots \\\textbf k_{n-1}</span>
+<span class="sd">        \end{bmatrix}= </span>
+<span class="sd">        \begin{bmatrix}</span>
+<span class="sd">        B_0 + A_0 u \\</span>
+<span class="sd">        B_1 + A_1 u \\</span>
+<span class="sd">        \vdots\\</span>
+<span class="sd">        B_{n-1} + A_{n-1} u </span>
+<span class="sd">        \end{bmatrix}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;expected a to be 2D tensor, got </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">assert</span> <span class="n">b</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;expected b to be 1D tensor, got </span><span class="si">{</span><span class="n">b</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -124,11 +153,11 @@
         <span class="k">pass</span>
 
 <div class="viewcode-block" id="ImplicitLinearRungeKutta.forward_M"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta.forward_M">[docs]</a>    <span class="k">def</span> <span class="nf">forward_M</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;left side matrix </span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;left side matrix </span>
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            M \\frac{\partial u}{\partial t} = A(t)u + B(t)</span>
+<span class="sd">            M \frac{\partial u}{\partial t} = A(t)u + B(t)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -136,19 +165,18 @@
 <span class="sd">            time</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        torch_fem.sparse.SparseMatrix or torch.Tensor or None or int or float</span>
+<span class="sd">        torch_fem.sparse.SparseMatrix or torch.Tensor or float</span>
 <span class="sd">            normally, 2D :meth:`torch.Tensor` or :meth:`torch_fem.sparse.SparseMatrix` of shape :math:`[D, D]` where :math:`D` is the dimension of the problem;</span>
-<span class="sd">            if return :obj:`None`, the left side matrix :math:`M` is assumed to be the identity;</span>
 <span class="sd">            if return :obj:`int` or :obj:`float`, the left side matrix :math:`M` is assumed to be a diagonal matrix with the same value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="mf">1.0</span></div>
 
 <div class="viewcode-block" id="ImplicitLinearRungeKutta.forward_A"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta.forward_A">[docs]</a>    <span class="k">def</span> <span class="nf">forward_A</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;compute the linear mapping term :math:`A(t)`</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;compute the linear mapping term :math:`A(t)`</span>
 
 <span class="sd">        .. math::</span>
 <span class="sd">            </span>
-<span class="sd">                f(t, u) = A(t)u + B(t)</span>
+<span class="sd">            M \frac{\partial u}{\partial t} = A(t)u + B(t)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -156,19 +184,18 @@
 <span class="sd">            time</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        torch_fem.sparse.SparseMatrix or torch.Tensor or None or int or float</span>
+<span class="sd">        torch_fem.sparse.SparseMatrix or torch.Tensor or float</span>
 <span class="sd">            2D :meth:`torch.Tensor` or :meth:`torch_fem.sparse.SparseMatrix` of shape :math:`[D, D]` where :math:`D` is the dimension of the problem;</span>
-<span class="sd">            if return :obj:`None`, the linear mapping term is assumed to be the zero matrix;</span>
 <span class="sd">            if return :obj:`int` or :obj:`float`, the linear mapping term is assumed to be a diagonal matrix with the same value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="mf">1.0</span></div>
 
 <div class="viewcode-block" id="ImplicitLinearRungeKutta.forward_B"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta.forward_B">[docs]</a>    <span class="k">def</span> <span class="nf">forward_B</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;compute the linear mapping term :math:`B(t)`</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;compute the linear mapping term :math:`B(t)`</span>
 
 <span class="sd">        .. math::</span>
 <span class="sd">            </span>
-<span class="sd">                f(t, u) = A(t)u + B(t)</span>
+<span class="sd">            M \frac{\partial u}{\partial t} = A(t)u + B(t)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -176,12 +203,59 @@
 <span class="sd">            time</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        torch.Tensor or None or int or float</span>
+<span class="sd">        torch.Tensor or float</span>
 <span class="sd">            1D :meth:`torch.Tensor` of shape :math:`[D]` where :math:`D` is the dimension of the problem;</span>
-<span class="sd">            if return :obj:`None`, the linear mapping term is assumed to be the zero vector;</span>
 <span class="sd">            if return :obj:`int` or :obj:`float`, the linear mapping term is assumed to be a vector with the same value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="mf">0.0</span></div>
+    
+<div class="viewcode-block" id="ImplicitLinearRungeKutta.pre_solve_lhs"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta.pre_solve_lhs">[docs]</a>    <span class="k">def</span> <span class="nf">pre_solve_lhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">K</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;precompute something before solving the linear system,</span>
+<span class="sd">        for example, do the condensation</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        K : torch.Tensor or torch_fem.sparse.SparseMatrix</span>
+<span class="sd">            the left side matrix</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor or torch_fem.sparse.SparseMatrix</span>
+<span class="sd">            the left side matrix after precompute</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">K</span></div>
+    
+<div class="viewcode-block" id="ImplicitLinearRungeKutta.pre_solve_rhs"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta.pre_solve_rhs">[docs]</a>    <span class="k">def</span> <span class="nf">pre_solve_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;precompute something before solving the linear system,</span>
+<span class="sd">        for example, do the condensation</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        f : torch.Tensor</span>
+<span class="sd">            the right hand side vector</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            the right hand side vector after precompute</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">f</span></div>
+
+<div class="viewcode-block" id="ImplicitLinearRungeKutta.post_solve"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta.post_solve">[docs]</a>    <span class="k">def</span> <span class="nf">post_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;postprocess after solving the linear system,</span>
+<span class="sd">        for example, do the condensation recovery</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u: torch.Tensor</span>
+<span class="sd">            the solution of the linear system</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            the solution after postprocess</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">u</span></div>
 
 <div class="viewcode-block" id="ImplicitLinearRungeKutta.step"><a class="viewcode-back" href="../../../api_reference/ode.html#torch_fem.ode.ImplicitLinearRungeKutta.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">u0</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -198,6 +272,9 @@
 <span class="sd">            time step</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="n">u0</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;expected u0 to be 1D tensor, got </span><span class="si">{</span><span class="n">u0</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">u0</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u0</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">u0</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u0</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">u0</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u0</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
         <span class="n">D</span> <span class="o">=</span> <span class="n">u0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">dt</span> 
         <span class="n">ts</span> <span class="o">=</span> <span class="n">t0</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span>
@@ -208,63 +285,48 @@
             <span class="n">Ai</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_A</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">Bi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_B</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">Mi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_M</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Ai</span><span class="p">,</span> <span class="p">(</span><span class="n">SparseMatrix</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;expected A to be SparseMatrix or torch.Tensor or float, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">Ai</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Bi</span><span class="p">,</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)),</span> <span class="sa">f</span><span class="s2">&quot;expected B to be torch.Tensor or float, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">Bi</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Mi</span><span class="p">,</span> <span class="p">(</span><span class="n">SparseMatrix</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;expected M to be SparseMatrix or torch.Tensor or float, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">Mi</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
                 <span class="n">use_sparse</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Mi</span><span class="p">,</span> <span class="n">SparseMatrix</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Ai</span><span class="p">,</span> <span class="n">SparseMatrix</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">use_sparse</span><span class="p">:</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># check if all the matrices are of the same type</span>
+                <span class="k">if</span> <span class="n">use_sparse</span><span class="p">:</span> <span class="c1"># if use_sparse, then all the matrices should be SparseMatrix or float</span>
                     <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Ai</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;expected A to be SparseMatrix or None, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">Ai</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Mi</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;expected M to be SparseMatrix or None, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">Mi</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="k">else</span><span class="p">:</span>
+                <span class="k">else</span><span class="p">:</span> <span class="c1"># if not use_sparse, then all the matrices should be torch.Tensor or float</span>
                     <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Ai</span><span class="p">,</span> <span class="n">SparseMatrix</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;expected A to be torch.Tensor or None, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">Ai</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Mi</span><span class="p">,</span> <span class="n">SparseMatrix</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;expected M to be torch.Tensor or None, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">Mi</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             
-            <span class="k">if</span> <span class="n">Mi</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">use_sparse</span><span class="p">:</span>
-                    <span class="n">Mi</span> <span class="o">=</span> <span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">Mi</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Mi</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-                <span class="k">if</span> <span class="n">use_sparse</span><span class="p">:</span>
-                    <span class="n">Mi</span> <span class="o">=</span> <span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">Mi</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">Mi</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="o">*</span> <span class="n">Mi</span>
+            <span class="c1"># convert Mi, Ai to torch.Tensor or SparseMatrix</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Mi</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span> 
+                <span class="n">Mi</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Mi</span><span class="p">)</span>
+                <span class="n">Mi</span> <span class="o">=</span> <span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">Mi</span><span class="p">)</span> <span class="k">if</span> <span class="n">use_sparse</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="o">*</span> <span class="n">Mi</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Ai</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                <span class="n">Ai</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Ai</span><span class="p">)</span>
+                <span class="n">Ai</span> <span class="o">=</span> <span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">Ai</span><span class="p">)</span> <span class="k">if</span> <span class="n">use_sparse</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="o">*</span> <span class="n">Ai</span>
+            <span class="n">Mi</span> <span class="o">=</span> <span class="n">Mi</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">u0</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u0</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">Ai</span> <span class="o">=</span> <span class="n">Ai</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">u0</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u0</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
+            <span class="c1"># main logic</span>
             <span class="k">for</span> <span class="n">j</span>  <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">Ai</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span> <span class="n">h</span>  <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>  
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span> <span class="n">h</span>  <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">Ai</span> 
-                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">Mi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">Ai</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Ai</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span> <span class="c1"># lhs[i][j] of shape torch.Size([])</span>
-                        <span class="k">if</span> <span class="n">use_sparse</span><span class="p">:</span>
-                            <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span> <span class="o">+</span> <span class="n">Mi</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="o">*</span> <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">Mi</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">Mi</span> <span class="o">+</span> <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> 
+                <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">h</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">Ai</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">Mi</span>  
+            <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Bi</span> <span class="o">+</span> <span class="n">Ai</span> <span class="o">@</span> <span class="n">u0</span> 
 
-            <span class="k">if</span> <span class="n">Ai</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">Bi</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">u0</span>
-            <span class="k">elif</span> <span class="n">Ai</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Bi</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Ai</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-                    <span class="k">if</span> <span class="n">use_sparse</span><span class="p">:</span>
-                        <span class="n">Ai</span> <span class="o">=</span> <span class="n">SparseMatrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">Ai</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">Ai</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="o">*</span> <span class="n">Ai</span>
-                <span class="k">if</span> <span class="n">Bi</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ai</span> <span class="o">@</span> <span class="n">u0</span> 
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Bi</span> <span class="o">+</span> <span class="n">Ai</span> <span class="o">@</span> <span class="n">u0</span> 
 
+        <span class="c1"># pre_solve </span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">):</span>
+                <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_solve_lhs</span><span class="p">(</span><span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_solve_rhs</span><span class="p">(</span><span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
         <span class="c1"># combine lhs and rhs</span>
         <span class="k">if</span> <span class="n">use_sparse</span><span class="p">:</span>
             <span class="n">lhs</span> <span class="o">=</span> <span class="n">SparseMatrix</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">lhs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
-            <span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">lhs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">)],</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">rhs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># solve linear system</span>
@@ -274,7 +336,10 @@
             <span class="n">k</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span>
 
         <span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
-        <span class="n">u</span> <span class="o">=</span> <span class="n">u0</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">@</span> <span class="n">k</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">u0</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="n">b</span> <span class="o">@</span> <span class="n">k</span>
+
+        <span class="c1"># post_solve</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_solve</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
     
         <span class="k">return</span> <span class="n">u</span> </div></div>
 </pre></div>

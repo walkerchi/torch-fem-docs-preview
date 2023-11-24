@@ -141,11 +141,11 @@
 
 <span class="sd">            \\mathcal P_e: \\mathbb{R}_{\\text{sparse}}^{|\mathcal C_e| \\times B_e} \\rightarrow \\mathbb{R}^{|\mathcal V|}</span>
 
-<span class="sd">        where :math:`\mathcal C` is the set of elements, :math:`B` is the number of basis, :math:`\mathcal V` is the set of nodes/vertices/points.</span>
+<span class="sd">        where :math:`\\mathcal C` is the set of elements, :math:`B` is the number of basis, :math:`\mathcal V` is the set of nodes/vertices/points.</span>
 
 <span class="sd">        projector from element to edge</span>
 <span class="sd">    elements : BufferDict[str, torch.Tensor]</span>
-<span class="sd">        The element type is the key, which should be one of :meth:`torch_fem.shape.element_types`.</span>
+<span class="sd">        The element type is the key, which should be one of :meth:`torch_feme.shape.element_types`.</span>
 <span class="sd">        Each :obj:`element_type` corresponds to a 2D tensor of shape :math:`[N, B]`, where :math:`N` is the number of elements and :math:`B` is the number of basis functions</span>
 <span class="sd">        element connectivity of each element type</span>
 <span class="sd">    n_points : int</span>
@@ -168,7 +168,8 @@
                    <span class="n">quadrature_points</span><span class="p">,</span>
                    <span class="n">shape_val</span><span class="p">,</span>
                    <span class="n">projector</span><span class="p">,</span> 
-                   <span class="n">elements</span><span class="p">):</span>
+                   <span class="n">elements</span><span class="p">,</span>
+                   <span class="n">n_points</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="n">element_types</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">quadrature_weights</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -182,20 +183,21 @@
         
         <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span>          <span class="o">=</span> <span class="n">dimension</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">element_types</span>      <span class="o">=</span> <span class="n">element_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_points</span>           <span class="o">=</span> <span class="n">n_points</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span>
         
     <span class="k">def</span> <span class="nf">_integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_integral</span><span class="p">,</span> <span class="n">jxw</span><span class="p">,</span> <span class="n">n_element</span><span class="p">,</span> <span class="n">n_basis</span><span class="p">,</span> <span class="n">use_element_parallel</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">use_element_parallel</span><span class="p">:</span>
             <span class="n">error_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;the shape returned by forward function is </span><span class="si">{</span><span class="n">batch_integral</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> which is not supported, should either be [batch_size,</span><span class="si">{</span><span class="n">n_basis</span><span class="si">}</span><span class="s2">] or [batch_size,</span><span class="si">{</span><span class="n">n_basis</span><span class="si">}</span><span class="s2">, dof_per_point]&quot;</span>
-            <span class="k">assert</span> <span class="n">batch_integral</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">n_basis</span><span class="p">,</span> <span class="n">error_msg</span>
             <span class="k">assert</span> <span class="n">batch_integral</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">batch_integral</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="n">error_msg</span>
+            <span class="k">assert</span> <span class="n">batch_integral</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">n_basis</span><span class="p">,</span> <span class="n">error_msg</span>
             <span class="n">batch_integral</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;qi...,eq-&gt;ei...&quot;</span><span class="p">,</span> <span class="n">batch_integral</span><span class="p">,</span> <span class="n">jxw</span><span class="p">)</span> <span class="c1"># [n_element, n_basis, ...]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">error_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;the shape returned by forward function is </span><span class="si">{</span><span class="n">batch_integral</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> which is not supported, should either be [</span><span class="si">{</span><span class="n">n_element</span><span class="si">}</span><span class="s2">,batch_size,</span><span class="si">{</span><span class="n">n_basis</span><span class="si">}</span><span class="s2">] or [</span><span class="si">{</span><span class="n">n_element</span><span class="si">}</span><span class="s2">,batch_size,</span><span class="si">{</span><span class="n">n_basis</span><span class="si">}</span><span class="s2">, dof_per_point]&quot;</span>
+            <span class="k">assert</span> <span class="n">batch_integral</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">batch_integral</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span><span class="p">,</span> <span class="n">error_msg</span>
             <span class="k">assert</span> <span class="n">batch_integral</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">n_element</span><span class="p">,</span> <span class="n">error_msg</span>
             <span class="k">assert</span> <span class="n">batch_integral</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">n_basis</span><span class="p">,</span> <span class="n">error_msg</span>
-            <span class="k">assert</span> <span class="n">batch_integral</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">batch_integral</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span><span class="p">,</span> <span class="n">error_msg</span>
             <span class="n">batch_integral</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;eqb...,eq-&gt;eb...&quot;</span><span class="p">,</span> <span class="n">batch_integral</span><span class="p">,</span> <span class="n">jxw</span><span class="p">)</span> <span class="c1"># [n_element, n_basis, ...]</span>
         <span class="k">return</span> <span class="n">batch_integral</span>
     
@@ -324,10 +326,10 @@
                             <span class="n">in_dims</span><span class="o">=</span><span class="n">element_dims</span>
                         <span class="p">)</span>
                         <span class="n">use_element_parallel</span> <span class="o">=</span> <span class="kc">True</span>
+     
+                <span class="n">batch_integral</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="c1"># [n_element, batch_size, n_basis, ...] or [batch_size,  n_basis, ...]</span>
 
-                <span class="n">batch_integral</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="c1"># [n_element, batch_size, n_basis, n_basis, ...] or [n_batch, batch_size, n_basis, ...]</span>
-
-                <span class="n">batch_integral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">batch_integral</span><span class="p">,</span> <span class="n">jxw</span><span class="p">,</span> <span class="n">n_element</span><span class="p">,</span> <span class="n">n_basis</span><span class="p">,</span> <span class="n">use_element_parallel</span><span class="p">)</span>
+                <span class="n">batch_integral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_integrate</span><span class="p">(</span><span class="n">batch_integral</span><span class="p">,</span> <span class="n">jxw</span><span class="p">,</span> <span class="n">n_element</span><span class="p">,</span> <span class="n">n_basis</span><span class="p">,</span> <span class="n">use_element_parallel</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">element_integral</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">element_integral</span> <span class="o">=</span> <span class="n">batch_integral</span>
@@ -339,7 +341,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">integral</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projector</span><span class="p">[</span><span class="n">element_type</span><span class="p">](</span><span class="n">element_integral</span><span class="p">)</span> <span class="c1"># [n_edge, ...]</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_output</span><span class="p">(</span><span class="n">integral</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_output</span><span class="p">(</span><span class="n">integral</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Override this function to precompute some data after the initialization</span>
@@ -412,13 +414,15 @@
 <span class="sd">        torch_fem.assemble.NodeAssembler</span>
 <span class="sd">            the new node_assembler sharing the same mesh</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ElementAssembler</span><span class="p">)</span>
+        <span class="n">err_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;the object </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2"> should inheritate from NodeAssembler&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">NodeAssembler</span><span class="p">),</span> <span class="n">err_msg</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
                 <span class="n">obj</span><span class="o">.</span><span class="n">quadrature_weights</span><span class="p">,</span>
                 <span class="n">obj</span><span class="o">.</span><span class="n">quadrature_points</span><span class="p">,</span>
                 <span class="n">obj</span><span class="o">.</span><span class="n">shape_val</span><span class="p">,</span>
                 <span class="n">obj</span><span class="o">.</span><span class="n">projector</span><span class="p">,</span> 
-                <span class="n">obj</span><span class="o">.</span><span class="n">elements</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">elements</span><span class="p">,</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">n_points</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="NodeAssembler.from_mesh"><a class="viewcode-back" href="../../../api_reference/assemble.html#torch_fem.assemble.node_assembler.NodeAssembler.from_mesh">[docs]</a>    <span class="nd">@classmethod</span>
@@ -456,7 +460,7 @@
             <span class="n">get_quadrature</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">quadrature_order</span><span class="p">)</span> <span class="c1"># [n_quadrature], [n_quadrature, n_dim]</span>
             <span class="n">shape_val</span><span class="p">[</span><span class="n">element_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_shape_val</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">quadrature_points</span><span class="p">[</span><span class="n">element_type</span><span class="p">])</span> <span class="c1"># [n_quadrature, n_basis]</span>
             <span class="n">projector</span><span class="p">[</span><span class="n">element_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">Projector</span><span class="p">(</span>
-                <span class="n">from_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_element</span> <span class="o">*</span> <span class="n">n_basis</span><span class="p">),</span>
+                <span class="n">from_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_element</span> <span class="o">*</span> <span class="n">n_basis</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
                 <span class="n">to_</span>   <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
                 <span class="n">from_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_element</span><span class="p">,</span> <span class="n">n_basis</span><span class="p">),</span>
                 <span class="n">to_shape</span>   <span class="o">=</span> <span class="p">(</span><span class="n">n_points</span><span class="p">,)</span>
@@ -472,7 +476,8 @@
                    <span class="n">quadrature_points</span><span class="p">,</span>
                    <span class="n">shape_val</span><span class="p">,</span>
                    <span class="n">projector</span><span class="p">,</span> 
-                   <span class="n">elements</span><span class="p">)</span></div></div>
+                   <span class="n">elements</span><span class="p">,</span>
+                   <span class="n">n_points</span><span class="p">)</span></div></div>
 
 <span class="n">NodeAssembler</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="vm">__doc__</span>
 </pre></div>
